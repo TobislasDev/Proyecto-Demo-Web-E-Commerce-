@@ -1,0 +1,171 @@
+{% extends 'layouts/Base.html' %}
+{% load static %}
+{% block title %}Detalles del Producto{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <!-- Detalle del Producto -->
+    <div class="row g-4 mb-5">
+        <!-- Imágenes Adicionales -->
+        <div class="col-lg-1 order-lg-1 order-2">
+            <div class="d-flex flex-lg-column gap-2 h-100">
+                {% for imagen in producto.Imagenes_Adicionales.all %}
+                <div class="product-thumbnail cursor-pointer border rounded-3 p-2 {% if forloop.first %}border-primary{% endif %}">
+                    <img src="{{ imagen.imagen.url }}" 
+                         alt="Thumbnail {{ forloop.counter }}" 
+                         class="img-fluid rounded-2" 
+                         style="aspect-ratio: 1; object-fit: cover;">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Imagen Principal -->
+        <div class="col-lg-5 order-lg-2 order-1">
+            <div class="position-relative">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <img src="{{ producto.imagen.url }}" 
+                         alt="{{ producto.name }}" 
+                         class="img-fluid" 
+                         style="aspect-ratio: 1; object-fit: cover;">
+                </div>
+                <button class="btn btn-light rounded-circle position-absolute top-0 end-0 m-3 p-2">
+                    <i class="bi bi-heart"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Detalles del Producto -->
+        <div class="col-lg-6 order-lg-3 order-3">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <!-- Título y Precio -->
+                    <h1 class="h3 mb-2">{{ producto.name }}</h1>
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <h2 class="h4 text-primary mb-0">${{ producto.precio }}</h2>
+                        {% if producto.precio_anterior %}
+                        <span class="text-decoration-line-through text-muted">${{ producto.precio_anterior }}</span>
+                        {% endif %}
+                    </div>
+                    <!-- Seleccionar Cantidades -->
+                    <div class="mb-4">
+                        <label class="form-label">Cantidad</label>
+                        <div class="d-flex align-items-center gap-3" style="width: fit-content;">
+                            <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px;">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input type="number" class="form-control text-center" value="1" min="1" style="width: 80px;">
+                            <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px;">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Botones de Acción -->
+                    <div class="d-grid gap-2 mb-4">
+                        <button class="btn btn-primary py-3">
+                            <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
+                        </button>
+                        <button class="btn btn-outline-primary py-3">
+                            <i class="bi bi-heart me-2"></i>Agregar a Lista de Deseos
+                        </button>
+                    </div>
+                    <!-- Descripción del Producto -->
+                    <div class="mb-4">
+                        <h3 class="h5 mb-3">Descripción del Producto</h3>
+                        <p class="text-muted">{{ producto.descripcion }}</p>
+                    </div>
+                    <!-- Métodos de Pago -->
+                    <div class="border rounded-3 p-3 bg-light">
+                        <h3 class="h5 mb-3">Métodos de Pago</h3>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <img src="{% static 'img/visa.svg' %}" alt="Visa" height="30">
+                            <img src="{% static 'img/mc_symbol.svg' %}" alt="Mastercard" height="30">
+                            <img src="{% static 'img/paypal.svg' %}" alt="PayPal" height="30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Productos Relacionados -->
+    <div class="mb-5">
+        <h2 class="h4 mb-4">Productos Relacionados</h2>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for producto in productos_relacionados %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm rounded-4 product-card">
+                    <div class="position-relative">
+                        <img src="{{ producto.imagen.url }}" 
+                             class="card-img-top rounded-top-4" 
+                             alt="{{ producto.name }}" 
+                             style="aspect-ratio: 1; object-fit: cover;">
+                        <button class="btn btn-light btn-sm rounded-circle position-absolute top-0 end-0 m-3">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body p-3">
+                        <h5 class="card-title mb-1">{{ producto.name }}</h5>
+                        <p class="text-primary mb-2">${{ producto.precio }}</p>
+                        <button class="btn btn-primary w-100">
+                            <i class="bi bi-cart-plus me-2"></i>Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<style>
+    .product-thumbnail {
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+    
+    .product-thumbnail:hover {
+        border-color: #4F46E5 !important;
+    }
+    
+    .product-card {
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .btn {
+        font-weight: 500;
+    }
+    
+    .btn-primary {
+        background-color: #4F46E5;
+        border-color: #4F46E5;
+    }
+    
+    .btn-primary:hover {
+        background-color: #4338CA;
+        border-color: #4338CA;
+    }
+    
+    .text-primary {
+        color: #4F46E5 !important;
+    }
+    
+    .btn-outline-primary {
+        border-color: #4F46E5;
+        color: #4F46E5;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #4F46E5;
+        border-color: #4F46E5;
+    }
+    
+    .form-control:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+    }
+    
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

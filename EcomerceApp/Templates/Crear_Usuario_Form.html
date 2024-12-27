@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Styles/usuario_cliente.css' %}">
+    {% endblock %}
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-card">
+            <!-- Encabezado -->
+            <div class="registration-header">
+                <h2>Registro de Usuario</h2>
+            </div>
+            
+            <!-- Cuerpo -->
+            <div class="registration-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Nombre -->
+                    <div class="form-group">
+                        <label for="first_name">Nombre</label>
+                        {{ form.first_name }}
+                    </div>
+
+                    <!-- Apellido -->
+                    <div class="form-group">
+                        <label for="last_name">Apellido</label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <!-- Nombre de Usuario -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        {{ form.username }}
+                    </div>
+
+                    <!-- Correo Electrónico -->
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        {{ form.email }}
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        {{ form.password }}
+                    </div>
+
+                    <!-- Teléfono 
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        {{ form.telefono }}
+                    </div>-->
+
+                    <!-- Dirección 
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        {{ form.direccion }}
+                    </div>-->
+
+                   <!-- Campo de Fecha de Nacimiento -->
+                    <div class="form-group">
+                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                        {{ form.fecha_nacimiento }}
+                    </div>
+
+                    <!-- Género -->
+                    <div class="form-group">
+                        <label for="genero">Género</label>
+                        <div class="custom-radio-group">
+                            {{ form.genero }}
+                        </div>
+                    </div>
+
+                    <!-- Foto de Perfil 
+                    <div class="form-group">
+                        <label for="foto_perfil">Foto de Perfil</label>
+                        {{ form.foto_perfil }}
+                    </div>-->
+
+                    <!-- Botón de Enviar -->
+                    <button type="submit" class="submit-button">Crear Usuario</button>
+                    
+                    <!-- Enlace para salir -->
+                    <a href="/" class="exit-link">Salir</a>
+                </form>
+
+                {% if form.errors %}
+                <div class="error-container">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+</html>

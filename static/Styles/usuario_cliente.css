@@ -1,0 +1,204 @@
+/* Contenedor principal */
+.registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4; /* Fondo gris claro */
+    padding: 2rem;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Tarjeta del formulario */
+.registration-card {
+    background: #ffffff; /* Fondo blanco */
+    width: 100%;
+    max-width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra moderna */
+    overflow: hidden;
+    border: 1px solid #e0e0e0; /* Borde gris claro */
+}
+
+/* Encabezado del formulario */
+.registration-header {
+    background-color: #333333; /* Gris oscuro */
+    color: #ffffff; /* Blanco */
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.registration-header h2 {
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Contenido del formulario */
+.registration-body {
+    padding: 2rem;
+}
+
+/* Campos del formulario */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555555; /* Gris medio */
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #dcdcdc; /* Gris claro */
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #888888; /* Gris oscuro */
+    background-color: #f9f9f9;
+}
+
+/* Botón de envío */
+.submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #333333; /* Gris oscuro */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #222222; /* Negro suave */
+    transform: translateY(-2px);
+}
+
+/* Enlace de salida */
+.exit-link {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    color: #666666; /* Gris medio */
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.exit-link:hover {
+    color: #222222; /* Gris oscuro */
+}
+
+/* Contenedor de errores */
+.error-container {
+    background-color: #fee2e2; /* Fondo rojo claro */
+    color: #dc2626; /* Rojo oscuro */
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid #f5a2a2; /* Borde rojo */
+    margin-bottom: 1.5rem;
+}
+
+.error-container ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    padding: 0;
+}
+
+/* Estilizar el campo de fecha */
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    width: 100%;
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.2s ease;
+}
+
+input[type="date"]:focus {
+    border-color: #666;
+    outline: none;
+    box-shadow: 0 0 4px rgba(102, 102, 102, 0.5);
+}
+
+/* Estilo para selección de género */
+.custom-radio-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.custom-radio-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    width: 100%;
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.2s ease;
+}
+
+.custom-radio-group select:focus {
+    border-color: #666;
+    outline: none;
+    box-shadow: 0 0 4px rgba(102, 102, 102, 0.5);
+}
+
+/* Opcional: Radio Buttons para Género */
+.custom-radio-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.custom-radio-group input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #333;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.custom-radio-group input[type="radio"]:checked {
+    background-color: #333;
+}
+
+.custom-radio-group input[type="radio"]:focus {
+    border-color: #666;
+    box-shadow: 0 0 4px rgba(102, 102, 102, 0.5);
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+    .registration-body {
+        padding: 1.5rem;
+    }
+
+    .registration-header h2 {
+        font-size: 1.5rem;
+    }
+}

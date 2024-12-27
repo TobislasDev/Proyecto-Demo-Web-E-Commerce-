@@ -1,0 +1,121 @@
+.products-container {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 20px;
+}
+.products-title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222222;
+}
+.search-form {
+    margin-bottom: 2rem;
+}
+.search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+.search-input:focus {
+    outline: none;
+    border-color: #333333;
+}
+.search-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.search-button:hover {
+    background-color: #222222;
+}
+.product-card {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px 0 0 8px;
+}
+.product-details {
+    padding: 1.5rem;
+}
+.product-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #222222;
+    text-decoration: none;
+}
+.product-title:hover {
+    color: #000000;
+}
+.product-description {
+    color: #666666;
+    margin-bottom: 1rem;
+}
+.product-price {
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 1.5rem;
+}
+.product-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+.wishlist-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #666666;
+    background: none;
+    color: #666666;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+.wishlist-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #333333;
+}
+.cart-button {
+    padding: 0.5rem 1rem;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s;
+}
+.cart-button:hover {
+    background-color: #222222;
+}
+@media (max-width: 768px) {
+    .product-image {
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+    }
+}

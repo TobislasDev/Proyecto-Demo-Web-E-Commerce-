@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Styles/index.css' %}">
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+          <div class="footer-grid">
+              <div class="footer-section">
+                  <h3>Nosotros</h3>
+                  <p>Ofrecemos productos de alta calidad, Nuestra misión es hacer que las compras sean fáciles y agiles.</p>
+              </div>
+              <div class="footer-section">
+                  <h3>Enlaces</h3>
+                  <ul>
+                      <li><a href="#">Terms & Conditions</a></li>
+                      <li><a href="#">Privacy Policy</a></li>
+                      <li><a href="#">Shipping Information</a></li>
+                      <li><a href="#">FAQs</a></li>
+                  </ul>
+              </div>
+              <div class="footer-section">
+                  <h3>Contactanos</h3>
+                  <ul>
+                      <li>Email: EguerahaStore@ecommerce.com</li>
+                      <li>Tel: (+595) 994-948760</li>
+                      <li>Dirección: Proximamente!</li>
+                  </ul>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              <p>&copy; 2024 EguerahaStore. All rights reserved.</p>
+          </div>
+      </div>
+  </footer> 
+
+</body>
+</html>

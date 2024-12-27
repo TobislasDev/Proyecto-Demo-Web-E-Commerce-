@@ -1,0 +1,117 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Index{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Styles/index.css' %}">
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Styles/index.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+        <h1>Bienvenidos a EguerahaStore</h1>
+        <p>Descubre productos a los mejores costos</p>
+    </div>
+</section>
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-item">
+                <img src="{% static 'img/icon-shein.png' %}" alt="Pedidos desde la comodidad de tu hogar" class="feature-icon">
+                <h4>Productos de Shein</h4>
+                <p>Pedidos desde la comodidad de tu hogar</p>
+            </div>
+            <div class="feature-item">
+              <img src="{% static 'img/icon-envio.png' %}" alt="Envio Zona Gran Asuncion" class="feature-icon">
+                <h4>Envio Zona Gran Asuncion</h4>
+                <p>Envio habilitado para la zona de Gran Asuncion</p>
+            </div>
+            <div class="feature-item">
+              <img src="{% static 'img/Icon-Chat.png' %}" alt="Asesoramiento en linea" class="feature-icon">
+                <h4>Asesoramiento en linea</h4>
+                <p>Todos los detalles lo podes consultar en linea</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="products">
+    <div class="container">
+        <h2>Productos Destacados</h2>
+        <div class="products-grid">
+            <!-- Product Card 1 -->
+            <div class="product-card">
+                <img src="/placeholder.svg" alt="Producto 1" class="product-image">
+                <div class="product-content">
+                    <h5>Producto 1</h5>
+                    <p>Descripcion</p>
+                    <p class="price">$$$$$</p>
+                    <div class="product-actions">
+                        <button class="btn-favorite"><i class="heart-icon"></i></button>
+                        <button class="btn-primary">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="product-card">
+                <img src="/placeholder.svg" alt="Producto 2" class="product-image">
+                <div class="product-content">
+                    <h5>Producto 2</h5>
+                    <p>Descripcion</p>
+                    <p class="price">$$$$$</p>
+                    <div class="product-actions">
+                        <button class="btn-favorite"><i class="heart-icon"></i></button>
+                        <button class="btn-primary">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="product-card">
+                <img src="/placeholder.svg" alt="Producto 3" class="product-image">
+                <div class="product-content">
+                    <h5>Producto 3</h5>
+                    <p>Descripcion</p>
+                    <p class="price">$$$$$</p>
+                    <div class="product-actions">
+                        <button class="btn-favorite"><i class="heart-icon"></i></button>
+                        <button class="btn-primary">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="product-card">
+                <img src="/placeholder.svg" alt="Producto 4" class="product-image">
+                <div class="product-content">
+                    <h5>Producto 4</h5>
+                    <p>Descripcion</p>
+                    <p class="price">$$$$$</p>
+                    <div class="product-actions">
+                        <button class="btn-favorite"><i class="heart-icon"></i></button>
+                        <button class="btn-primary">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% block extra_js %}
+<script src="{% static 'Scripts/script.js' %}"></script>
+{% endblock %}
+
+{% endblock %}
+</body>
+</html>
