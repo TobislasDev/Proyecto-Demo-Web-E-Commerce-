@@ -4,4 +4,4 @@ db.sqlite3
 .env
 venv/
 staticfiles/
-EcomerceApp/productos/
+EcomerceApp/productos/*
