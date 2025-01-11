@@ -1,62 +1,63 @@
-{% extends 'layouts/base.html' %}
-{% load static %}
-{% load humanize %}
-{% block title %}Productos{% endblock %}
-<head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'Styles/product.css' %}">
-    {% endblock %}
-</head>
-{% block content %}
-<div class="products-container">
-    <h2 class="products-title">Nuestros Productos</h2>
-    
-    <form method="GET" action="{% url 'Productos' %}" class="search-form">
-        <div class="search-group">
-            <input type="text" name="q" class="search-input" placeholder="Buscar productos..." value="{{ query|default:'' }}">
-            <button type="submit" class="search-button">Buscar</button>
-        </div>
-    </form>
-    <div class="products-grid">
-        {% for x in productos %}
-        <div class="product-card">
-            <div class="product-layout">
-                <div class="product-image-container">
-                    {% if x.imagen %}
-                    <img src="{{ x.imagen.url }}" class="product-image" alt="{{ x.name }}">
-                    {% else %}
-                    <img src="{% static 'placeholder.svg' %}" alt="NO-IMAGEN" class="product-image">
-                    {% endif %}
-                </div>
-                
-                <div class="product-details">
-                    <h5><a href="{% url 'Productos_Detalle' x.id %}" class="product-title">{{ x.name }}</a></h5>
-                    <p class="product-description">{{ x.descripcion }}</p>
-                    <h6 class="product-price">Precio: ${{ x.precio|floatformat:0|intcomma }}</h6>
-                    
-                    <div class="product-actions">
-                        <a href="{% url 'Lista_de_deseo' x.id %}" class="wishlist-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>
-                            </svg>
-                        </a>
-                        
-                        <a href="{% url 'Carrito_de_compras' x.id %}" class="cart-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                            </svg>
-                        </a>
+    {% extends 'layouts/base.html' %}
+    {% load static %}
+    {% load humanize %}
+    {% block title %}Productos{% endblock %}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            {% block extra_css %}
+            <link rel="stylesheet" href="{% static 'Styles/Productos.css' %}">
+            {% endblock %}
+        </head>
+        <body>
+            {% block content %}
+            <div class="product-class">
+                <div class="products-container">
+                    <h1 class="products-title">Nuestros Productos</h1>
+                    <form class="search-form" method="GET" action="{% url 'Productos' %}">
+                        <div class="search-group">
+                            <input
+                                type="text"
+                                name="q"
+                                class="search-input"
+                                placeholder="Buscar productos..."
+                                value="{{ query|default:'' }}"
+                            />
+                            <button type="submit" class="search-button">Buscar</button>
+                        </div>
+                    </form>
+                    <div class="products-grid">
+                        {% for x in productos %}
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                {% if x.imagen %}
+                                <img src="{{ x.imagen.url }}" class="product-image" alt="{{ x.name }}">
+                                {% else %}
+                                <img src="{% static 'placeholder.svg' %}" alt="NO-IMAGEN" class="product-image">
+                                {% endif %}
+                            </div>
+                            <div class="product-details">
+                                <h5>
+                                    <a href="{% url 'Productos_Detalle' x.id %}" class="product-title">{{ x.name }}</a>
+                                </h5>
+                                <p class="product-description">{{ x.descripcion }}</p>
+                                <h6 class="product-price">Precio: ${{ x.precio|floatformat:0|intcomma }}</h6>
+                                <div class="product-actions">
+                                <a href="{% url 'Lista_de_deseo' x.id %}" class="wishlist-button">
+                                    <button class="btn-favorite"><i class="heart-icon"></i></button>
+                                </a>
+                                <a href="{% url 'Carrito_de_compras' x.id %}" class="cart-button">
+                                    <button class="btn-primary">Agregar al carrito</button>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}
-
-</body>
-</html>
+            {% endblock %}
+        </body>
+    </html>

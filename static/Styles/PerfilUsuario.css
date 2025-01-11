@@ -1,0 +1,99 @@
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #888;
+    margin-right: 20px;
+}
+
+.profile-info h2 {
+    margin: 0;
+    color: #333;
+}
+
+.profile-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #888;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f7fb;
+    color: #333;
+}
+
+.list-group {
+    list-style: none;
+    padding: 0;
+}
+
+.list-group li {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.list-group li a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+.list-group li a:hover {
+    color: #888;
+}
+
+/* Botones secundarios */
+.btn-outline-primary {
+    border-color: #888;
+    color: #888;
+}
+
+.btn-outline-primary:hover {
+    background-color: #888;
+    color: white;
+}
+
+/* Responsive (pantallas pequeñas) */
+@media (max-width: 768px) {
+    .profile-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+}

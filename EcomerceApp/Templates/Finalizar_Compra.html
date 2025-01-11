@@ -1,0 +1,66 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Finalizar Compra{% endblock %}</title>
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Styles/FinalizarCompras.css' %}">
+    {% endblock %}
+</head>
+{% block content %}
+<body class="{% block body_class %}checkout-page{% endblock %}">
+    <div class="checkout-container" id="checkout-page">
+        <div class="checkout-wrapper">
+            <div class="checkout-card">
+                <div class="header-section">
+                    <h1>Finalizar Compra</h1>
+                    <p>Revise y confirme los detalles de su compra.</p>
+                </div>
+                <form method="POST" class="checkout-form">    
+                    {% csrf_token %}
+                    {% if direcciones %}
+                    <div class="form-section">
+                        <h2>Dirección de Envío</h2>
+                        <select name="direccion" class="input-field">
+                            {% for direccion in direcciones %}
+                            <option value="{{ direccion.id }}">{{ direccion.direccion }}, {{ direccion.ciudad }}, {{ direccion.departamento }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <p>No tiene direcciones registradas. <a href="{% url 'Perfil_Usuario' %}">Agregar una nueva direccion</a></p>
+                    {% endif %}
+                    </div>
+                    <div class="form-section">
+                        <h2>Resumen de la Compra</h2>
+                        <ul class="list-group">
+                            {% for item in carrito_items %}
+                            <li class="list-group-item">
+                                {{ item.producto.name }} - {{ item.cantidad }} x Gs.{{ item.producto.precio|floatformat:0|intcomma }}
+                            </li>
+                            {% endfor %}
+                            <p><strong>El total de la compra es de: Gs.</strong> {{ total_venta|floatformat:0|intcomma }}</p>
+                        </ul>
+                    </div>
+                    <button type="submit" class="submit-button">Confirmar Compra</button>
+                </form>
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="{% if message.tags %} alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+
+                    </div>
+                    {% endfor %}
+                </div>
+               {% endif %} 
+                <p class="terms-text">Al confirmar la compra, acepta nuestros términos y condiciones.</p>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content %}
+</html>

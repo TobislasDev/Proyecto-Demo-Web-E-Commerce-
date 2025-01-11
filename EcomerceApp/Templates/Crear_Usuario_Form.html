@@ -25,32 +25,38 @@
 
                     <!-- Nombre -->
                     <div class="form-group">
-                        <label for="first_name">Nombre</label>
-                        {{ form.first_name }}
+                        <label for="nombre">Nombre</label>
+                        {{ form_usuario.nombre }}
                     </div>
 
                     <!-- Apellido -->
                     <div class="form-group">
-                        <label for="last_name">Apellido</label>
-                        {{ form.last_name }}
+                        <label for="apellido">Apellido</label>
+                        {{ form_usuario.apellido }}
                     </div>
 
                     <!-- Nombre de Usuario -->
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        {{ form.username }}
+                        <label for="username">Nombre de Usuario</label>
+                        {{ form_usuario.username }}
                     </div>
 
                     <!-- Correo Electrónico -->
                     <div class="form-group">
                         <label for="email">Correo Electrónico</label>
-                        {{ form.email }}
+                        {{ form_usuario.email }}
                     </div>
 
                     <!-- Contraseña -->
                     <div class="form-group">
                         <label for="password">Contraseña</label>
-                        {{ form.password }}
+                        {{ form_usuario.password }}
+                    </div>
+
+                    <!-- Confirmar Contraseña -->
+                    <div class="form-group">
+                        <label for="confirm_password">Confirmar Contraseña</label>
+                        {{ form_usuario.confirm_password }}
                     </div>
 
                     <!-- Teléfono 
@@ -65,24 +71,16 @@
                         {{ form.direccion }}
                     </div>-->
 
-                   <!-- Campo de Fecha de Nacimiento -->
+                    <!-- Fecha de Nacimiento -->
                     <div class="form-group">
                         <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-                        {{ form.fecha_nacimiento }}
+                        {{ form_usuario.fecha_nacimiento }}
                     </div>
 
-                    <!-- Género -->
+                    <!-- Género 
                     <div class="form-group">
                         <label for="genero">Género</label>
-                        <div class="custom-radio-group">
-                            {{ form.genero }}
-                        </div>
-                    </div>
-
-                    <!-- Foto de Perfil 
-                    <div class="form-group">
-                        <label for="foto_perfil">Foto de Perfil</label>
-                        {{ form.foto_perfil }}
+                        {{ form.genero }}
                     </div>-->
 
                     <!-- Botón de Enviar -->
@@ -92,7 +90,8 @@
                     <a href="/" class="exit-link">Salir</a>
                 </form>
 
-                {% if form.errors %}
+                <!-- Mostrar errores si existen -->
+                {% if form_usuario.errors %}
                 <div class="error-container">
                     <ul>
                         {% for field in form %}
@@ -107,5 +106,4 @@
         </div>
     </div>
 </body>
-</html>
 </html>

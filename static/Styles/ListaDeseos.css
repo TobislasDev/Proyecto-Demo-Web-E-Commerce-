@@ -1,0 +1,146 @@
+.wishlist-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.wishlist-title {
+    text-align: center;
+    color: #222222;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.wishlist-divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2rem 0;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.product-card {
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.product-title {
+    color: #333333;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.product-description {
+    color: #666666;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.btn-cart {
+    background-color: #ffffff;
+    border-color: #333333;
+    color: #333333;
+}
+
+.btn-cart:hover {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.btn-remove {
+    background-color: #ffffff;
+    border-color: #ff4444;
+    color: #ff4444;
+}
+
+.btn-remove:hover {
+    background-color: #ff4444;
+    color: #ffffff;
+}
+
+.empty-wishlist {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+.heart-icon {
+    color: #ff4444;
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.empty-message {
+    color: #333333;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.empty-description {
+    color: #666666;
+    margin-bottom: 2rem;
+}
+
+.btn-explore {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 0.75rem 2rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-explore:hover {
+    background-color: #222222;
+}
+
+@media (max-width: 768px) {
+    .wishlist-title {
+        font-size: 2rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}

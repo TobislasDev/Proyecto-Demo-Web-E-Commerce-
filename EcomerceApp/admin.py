@@ -45,7 +45,7 @@ class ProductosAdmin(admin.ModelAdmin):
     list_per_page = 3
     list_filter = ('marca',)
     inlines = [ImagenProductoAdmin]
-     #Vamos a adherir un advance option, con fieldsrts lo que haremos sera, no habilitar a primera los distintos datos que corresponden al modelo producto en pantalla, para poder observar los demas datos, tendremos que dar click en advance option y con ello se nos desplegaran los demas datos para poder modificarlos
+     #Vamos a adherir un advance option, con fieldsets lo que haremos sera, no habilitar a primera los distintos datos que corresponden al modelo producto en pantalla, para poder observar los demas datos, tendremos que dar click en advance option y con ello se nos desplegaran los demas datos para poder modificarlos
     fieldsets = (
         (None , {
             'fields': ('name',)
@@ -102,29 +102,23 @@ class DetalleVentaAdmin(admin.ModelAdmin):
     list_filter=('id', 'venta', )
 
 #VERIFICACION DE USUARIOS Y DIRECCIONES EN EL PANEL DE ADMINISTRADOR
-class UsuarioClienteAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'telefono')
+class UsuarioClienteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'telefono', 'direccion')
     list_filter = ('username', 'email', 'groups')
-    search_fields = ('username', 'email', 'first_name', 'telefono')
-    ordering = ('username', )
+    search_fields = ('user__username', 'user__email', 'first_name', 'telefono')
+    ordering = ('user__username', )
 
     fieldsets=(
-        (None,{'fields':('username', 'password')}),
-        ('Información Personal', {'fields': ('first_name', 'last_name', 'email', 'telefono', 'direccion', 'fecha_nacimiento', 'genero', 'foto_perfil')}),
-        ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Fechas Importantes', {'fields': ('last_login', 'date_joined')}),
-    )
-    add_fieldsets =(
-         (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'telefono'),
+        (None, {'fields':('user',)}),
+        ('Informacion Adicional',{
+            'fields': ('telefono', 'direccion'),
         }),
     )
 
 class DireccionesEnvioAdmin(admin.ModelAdmin):
     list_display = ('usuario_cliente', 'direccion', 'ciudad', 'departamento', 'tipo', 'es_principal', 'fecha_creacion')
     list_filter = ('tipo', 'es_principal', 'fecha_creacion')
-    search_fields = ('usuario_cliente__username', 'direccion', 'ciudad', 'departamento')
+    search_fields = ('usuario_cliente__user__username', 'direccion', 'ciudad', 'departamento')
 
 
 admin.site.register(UsuarioCliente, UsuarioClienteAdmin)

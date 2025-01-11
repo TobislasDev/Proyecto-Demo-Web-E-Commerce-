@@ -33,4 +33,3 @@ def restaurar_stock(sender, instance, **kwargs):
     except Exception as e:
         print(f"Error al restaurar el stock: {e}")
         
-    

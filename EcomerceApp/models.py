@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils import timezone #para las tablas con horario
-from datetime import timezone
 from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -13,6 +11,7 @@ from django.core.exceptions import ValidationError
 
 class Categoria(models.Model):
     descripcion = models.CharField(max_length=100, verbose_name="name")    
+
     def __str__(self):
         return self.descripcion 
     
@@ -39,11 +38,11 @@ class Productos(models.Model):
     descripcion = models.CharField(max_length=150, verbose_name="descripcion")
     imagen = models.ImageField(upload_to="productos/", null=True, blank=True, verbose_name="Imagen_Principal")
     precio = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio")
-    marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE)
+    marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="Productos", verbose_name="Marca")
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="Productos", verbose_name="Categoria")
+    proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, related_name="Productos", verbose_name="Proveedor")
     stock_min = models.DecimalField(max_digits=10,decimal_places=2,null=False, verbose_name="Stock_Minimo")
-    stock_max = models.DecimalField(max_digits=10,decimal_places=2, null=False, verbose_name="Stock_Minimo")
+    stock_max = models.DecimalField(max_digits=10,decimal_places=2, null=False, verbose_name="Stock_Maximo")
 
     def __str__(self):
         return self.name + ' - ' + self.descripcion + ' - ' + self.categoria.descripcion +  ' - ' + self.marca.name + ' - ' + self.proveedor.name
@@ -57,16 +56,16 @@ class ImagenProducto(models.Model):
         return f"Imagen de {self.producto.name}"
 
 class Carrito(models.Model):
-    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Id_Usuario")
-    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Carrito", verbose_name="Id_Usuario")
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE, related_name="Carrito", verbose_name="Producto")
     cantidad = models.PositiveBigIntegerField(default=1, verbose_name="Cantidad")
 
     def __str__(self):
         return f"{self.id_usuario.username} - {self.producto.name}"
 
 class ListaDeseos(models.Model):
-    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Id_Usuario")
-    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Id_Usuario", related_name="ListaDeseos")
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE, related_name="ListaDeseos", verbose_name="Producto")
     cantidad = models.PositiveBigIntegerField(default=1, verbose_name="Cantidad")
 
     def __str__(self):
@@ -81,7 +80,7 @@ class Ventas(models.Model):
         ('Pagado', 'Pagado'),
         ('Cancelado', 'Cancelado'),]
     
-    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Id_Usuario')
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Ventas", verbose_name='Id_Usuario')
     fecha = models.DateTimeField(auto_now_add=True, verbose_name='Fecha_Hora')
     total_venta = models.DecimalField(max_digits=10, decimal_places=2, null=False, verbose_name='Total_Venta')
     estado = models.CharField(
@@ -101,12 +100,9 @@ class Ventas(models.Model):
     def formato_total_venta(self):
         return "{:,.0f}".format(self.total_venta)
 
-
-
-
 class DetalleVenta(models.Model):
-    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE, related_name='detalles', verbose_name='Venta')
-    producto = models.ForeignKey(Productos, on_delete=models.CASCADE, verbose_name='Producto')
+    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE, related_name='DetalleVenta', verbose_name='Venta')
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE, related_name="DetalleVenta", verbose_name='Producto')
     cantidad = models.PositiveBigIntegerField(default=1, verbose_name='Cantidad')
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Precio_Unitario')
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Subtotal')
@@ -126,7 +122,13 @@ class DetalleVenta(models.Model):
 #Añadimos los modelos para Usuario Clientes
 
 class UsuarioCliente(AbstractUser):
-    
+
+    user= models.OneToOneField(
+        User,
+        on_delete = models.CASCADE,
+        related_name="usuario_cliente",
+        verbose_name="Usuario"
+    )
     telefono = models.CharField(max_length=15, verbose_name="Teléfono", null=True, blank=True)
     direccion = models.TextField(verbose_name="Dirección", null=True, blank=True)
     fecha_nacimiento = models.DateField(null=True, blank=True, verbose_name="Fecha de Nacimiento")
@@ -160,9 +162,10 @@ class UsuarioCliente(AbstractUser):
         self.direcciones.update(es_principal=False)
         nueva_direccion.es_principal=True
         nueva_direccion.save()
+        
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.username})"
+        return f"{self.user.first_name} {self.user.last_name} ({self.username})"
         
     class Meta:
         verbose_name = "Usuario Cliente"
@@ -175,7 +178,7 @@ class DireccionesEnvio(models.Model):
         ('trabajo', 'Trabajo')
     ]
     usuario_cliente= models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        UsuarioCliente,
         on_delete=models.CASCADE,
         related_name="direcciones",
         verbose_name="UsuarioCliente",
@@ -201,7 +204,7 @@ class DireccionesEnvio(models.Model):
                 tipo=self.tipo,
                 es_principal=True
             ).exclude(id=self.id).update(es_principal=False)
-            super().clean()
+        super().clean()
 
     def marcar_como_principal(self):
         self.usuario_cliente.direcciones.filter(tipo=self.tipo).update(es_principal=False)

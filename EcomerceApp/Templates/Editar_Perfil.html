@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}Editar Perfil{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'Styles/EditarPerfil.css' %}">
+{% endblock %}
+{% block content %}
+<body class="{% block body_class %}editar-perfil{% endblock %}">
+
+<div id="editar-perfil-page">
+    <div class="editar-perfil-container">
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Formulario de edición de perfil -->
+            <h3>Editar Perfil</h3>
+            {{ form_edit_perfil.as_p }}
+
+            <!-- Formulario de direcciones -->
+            <h3>Editar Direcciones</h3>
+            {{ formset_direcciones.management_form }}
+            {% for form in formset_direcciones %}
+                <div class="direccion-form">
+                    {{ form.as_p }}
+                    {% if form.instance.pk %}
+                        <div class="delete-checkbox">
+                            <label for="{{ form.prefix }}-DELETE">Eliminar:</label>
+                            {{ form.DELETE }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a href="{% url 'Perfil_Usuario' %}" class="btn-cancel">
+               <button class="btn btn-primary"> Cancelar</button></a>
+        </form>
+    </div>
+</div>
+
+</body>
+{% endblock %}

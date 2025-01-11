@@ -1,0 +1,1680 @@
+[33mcommit 78033ee7844cf61d2629f6fc7a5b68004799d322[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Tobislasdev <tobislasdev@gmail.com>
+Date:   Fri Dec 27 00:58:34 2024 -0300
+
+    Primer Commit
+
+[1mdiff --git a/EcomerceApp/Templates/Agregar_Carrito.html b/EcomerceApp/Templates/Agregar_Carrito.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..76de256[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Agregar_Carrito.html[m
+[36m@@ -0,0 +1,166 @@[m
+[32m+[m[32m{% extends 'layouts/Base.html' %}[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m{% block title %}Carrito de Compras{% endblock %}[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m{% load humanize %}[m
+[32m+[m
+[32m+[m[32m<div class="container py-5">[m
+[32m+[m[32m    <div class="row">[m
+[32m+[m[32m        <div class="col-lg-12">[m
+[32m+[m[32m            <div class="card shadow-sm border-0 rounded-3">[m
+[32m+[m[32m                <div class="card-header bg-white border-0 py-3">[m
+[32m+[m[32m                    <h1 class="display-4 text-primary mb-3">Mi Lista de deseos</h1>[m
+[32m+[m[32m                    <hr class="text-muted">[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card-body p-4">[m
+[32m+[m[32m                    {% if carrito_item %}[m
+[32m+[m[32m                        <div class="table-responsive">[m
+[32m+[m[32m                            <table class="table table-borderless align-middle">[m
+[32m+[m[32m                                <thead class="bg-light">[m
+[32m+[m[32m                                    <tr>[m
+[32m+[m[32m                                        <th scope="col" class="ps-4">Producto</th>[m
+[32m+[m[32m                                        <th scope="col" class="text-center">Cantidad</th>[m
+[32m+[m[32m                                        <th scope="col" class="text-center">Precio</th>[m
+[32m+[m[32m                                        <th scope="col" class="text-end pe-4">Subtotal</th>[m
+[32m+[m[32m                                        <th scope="col" class="text-center">Acciones</th>[m
+[32m+[m[32m                                    </tr>[m
+[32m+[m[32m                                </thead>[m
+[32m+[m[32m                                <tbody>[m
+[32m+[m[32m                                    {% for item in carrito_item %}[m
+[32m+[m[32m                                    <tr class="border-bottom">[m
+[32m+[m[32m                                        <td class="ps-4">[m
+[32m+[m[32m                                            <div class="d-flex align-items-center">[m
+[32m+[m[32m                                                <img src="{{ item.producto.imagen.url }}"[m[41m [m
+[32m+[m[32m                                                     alt="{{ item.producto.name }}"[m[41m [m
+[32m+[m[32m                                                     class="rounded-3 me-3"[m
+[32m+[m[32m                                                     style="width: 60px; height: 60px; object-fit: cover;">[m
+[32m+[m[32m                                                <span class="fw-medium">{{ item.producto.name }}</span>[m
+[32m+[m[32m                                            </div>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                        <td class="text-center">[m
+[32m+[m[32m                                            <div class="d-flex align-items-center justify-content-center gap-2">[m
+[32m+[m[32m                                                <form action="{% url 'Eliminar_del_carrito' item.producto.id %}" method="POST" class="d-inline">[m
+[32m+[m[32m                                                    {% csrf_token %}[m
+[32m+[m[32m                                                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-circle p-1" style="width: 32px; height: 32px;">[m
+[32m+[m[32m                                                        <i class="bi bi-dash"></i>[m
+[32m+[m[32m                                                    </button>[m
+[32m+[m[32m                                                </form>[m
+[32m+[m[32m                                                <span class="badge bg-light text-dark px-4 py-2 rounded-pill">[m
+[32m+[m[32m                                                    {{ item.cantidad }}[m
+[32m+[m[32m                                                </span>[m
+[32m+[m[32m                                                <form action="{% url 'Carrito_de_compras' item.producto.id %}" method="POST" class="d-inline">[m
+[32m+[m[32m                                                    {% csrf_token %}[m
+[32m+[m[32m                                                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-circle p-1" style="width: 32px; height: 32px;">[m
+[32m+[m[32m                                                        <i class="bi bi-plus"></i>[m
+[32m+[m[32m                                                    </button>[m
+[32m+[m[32m                                                </form>[m
+[32m+[m[32m                                            </div>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                        <td class="text-center">${{ item.producto.precio|floatformat:0|intcomma }}</td>[m
+[32m+[m[32m                                        <td class="text-end pe-4">${{ item.total_producto|floatformat:0|intcomma }}</td>[m
+[32m+[m[32m                                        <td class="text-center">[m
+[32m+[m[32m                                            <form action="{% url 'Eliminar_carrito' item.producto.id %}" method="POST">[m
+[32m+[m[32m                                                {% csrf_token %}[m
+[32m+[m[32m                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-1" style="width: 32px; height: 32px;">[m
+[32m+[m[32m                                                    <i class="bi bi-trash"></i>[m
+[32m+[m[32m                                                </button>[m
+[32m+[m[32m                                            </form>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                    </tr>[m
+[32m+[m[32m                                    {% endfor %}[m
+[32m+[m[32m                                </tbody>[m
+[32m+[m[32m                                <tfoot>[m
+[32m+[m[32m                                    <tr>[m
+[32m+[m[32m                                        <td colspan="3" class="text-end pe-4">[m
+[32m+[m[32m                                            <span class="text-muted">Total</span>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                        <td class="text-end pe-4">[m
+[32m+[m[32m                                            <span class="fw-bold fs-5">${{ total|floatformat:0|intcomma }}</span>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                        <td></td>[m
+[32m+[m[32m                                    </tr>[m
+[32m+[m[32m                                </tfoot>[m
+[32m+[m[32m                            </table>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                        <div class="d-flex justify-content-end gap-2 mt-4">[m
+[32m+[m[32m                            <a href="{% url 'Productos' %}"[m[41m [m
+[32m+[m[32m                               class="btn btn-outline-secondary px-4">[m
+[32m+[m[32m                                <i class="bi bi-arrow-left me-2"></i>Seguir Comprando[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                            <a href="#"[m[41m [m
+[32m+[m[32m                               class="btn btn-primary px-4">[m
+[32m+[m[32m                                Finalizar Compra<i class="bi bi-arrow-right ms-2"></i>[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    {% else %}[m
+[32m+[m[32m                        <div class="text-center py-5">[m
+[32m+[m[32m                            <img src="{% static 'images/empty-cart.svg' %}"[m[41m [m
+[32m+[m[32m                                 alt="Carrito vacío"[m[41m [m
+[32m+[m[32m                                 class="mb-4"[m[41m [m
+[32m+[m[32m                                 style="width: 120px;">[m
+[32m+[m[32m                            <h3 class="h5 text-muted mb-3">Tu carrito está vacío</h3>[m
+[32m+[m[32m                            <a href="{% url 'Productos' %}"[m[41m [m
+[32m+[m[32m                               class="btn btn-primary px-4">[m
+[32m+[m[32m                                Explorar Productos[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    {% endif %}[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</div>[m
+[32m+[m
+[32m+[m[32m<style>[m
+[32m+[m[32m    .table th {[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m        text-transform: uppercase;[m
+[32m+[m[32m        font-size: 0.875rem;[m
+[32m+[m[32m        letter-spacing: 0.025em;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .badge {[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn {[m
+[32m+[m[32m        padding-top: 0.625rem;[m
+[32m+[m[32m        padding-bottom: 0.625rem;[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary {[m
+[32m+[m[32m        background-color: #4F46E5;[m
+[32m+[m[32m        border-color: #4F46E5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary:hover {[m
+[32m+[m[32m        background-color: #4338CA;[m
+[32m+[m[32m        border-color: #4338CA;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .text-primary {[m
+[32m+[m[32m        color: #4F46E5 !important;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .card {[m
+[32m+[m[32m        background-color: #ffffff;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .bg-light {[m
+[32m+[m[32m        background-color: #F9FAFB !important;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    .btn-outline-secondary:hover,[m
+[32m+[m[32m    .btn-outline-danger:hover {[m
+[32m+[m[32m        transform: scale(1.05);[m
+[32m+[m[32m        transition: transform 0.2s ease;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    .rounded-circle.btn-sm {[m
+[32m+[m[32m        display: inline-flex;[m
+[32m+[m[32m        align-items: center;[m
+[32m+[m[32m        justify-content: center;[m
+[32m+[m[32m    }[m
+[32m+[m[32m</style>[m
+[32m+[m[32m{% endblock %}[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Crear_Usuario.html b/EcomerceApp/Templates/Crear_Usuario.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c836c6d[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Crear_Usuario.html[m
+[36m@@ -0,0 +1,83 @@[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="es">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>Crear Usuario</title>[m
+[32m+[m[32m    <!-- CDN de Bootstrap 5 -->[m
+[32m+[m[32m    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m    <div class="container mt-5">[m
+[32m+[m[32m        <div class="row justify-content-center">[m
+[32m+[m[32m            <div class="col-lg-6">[m
+[32m+[m[32m                <div class="card shadow-sm">[m
+[32m+[m[32m                    <div class="card-body">[m
+[32m+[m[32m                        <h1 class="text-center mb-4">Crear Usuario</h1>[m
+[32m+[m[41m                        [m
+[32m+[m[32m                        <!-- Mostrar errores globales -->[m
+[32m+[m[32m                        {% if messages %}[m
+[32m+[m[32m                        <div class="container mt-3">[m
+[32m+[m[32m                            {% for message in messages %}[m
+[32m+[m[32m                                <div class="alert alert-{{ message.tags }}">[m
+[32m+[m[32m                                    {{ message }}[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            {% endfor %}[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                        {% endif %}[m
+[32m+[m[41m                        [m
+[32m+[m[32m                        {% if error %}[m
+[32m+[m[32m                        <div class="alert alert-danger" role="alert">[m
+[32m+[m[32m                            {{ error }}[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                        {% endif %}[m
+[32m+[m
+[32m+[m[32m                        <!-- Formulario -->[m
+[32m+[m[32m                        <form method="post">[m
+[32m+[m[32m                            {% csrf_token %}[m
+[32m+[m
+[32m+[m[32m                            <div class="mb-3">[m
+[32m+[m[32m                                <label for="id_nombre" class="form-label">{{ form_usuario.nombre.label }}</label>[m
+[32m+[m[32m                                {{ form_usuario.nombre }}[m
+[32m+[m[32m                            </div>[m
+[32m+[m
+[32m+[m[32m                            <div class="mb-3">[m
+[32m+[m[32m                                <label for="id_apellido" class="form-label">{{ form_usuario.apellido.label }}</label>[m
+[32m+[m[32m                                {{ form_usuario.apellido }}[m
+[32m+[m[32m                            </div>[m
+[32m+[m
+[32m+[m[32m                            <div class="mb-3">[m
+[32m+[m[32m                                <label for="id_email" class="form-label">{{ form_usuario.email.label }}</label>[m
+[32m+[m[32m                                {{ form_usuario.email }}[m
+[32m+[m[32m                            </div>[m
+[32m+[m
+[32m+[m[32m                            <div class="mb-3">[m
+[32m+[m[32m                                <label for="id_password" class="form-label">{{ form_usuario.password.label }}</label>[m
+[32m+[m[32m                                {{ form_usuario.password }}[m
+[32m+[m[32m                            </div>[m
+[32m+[m
+[32m+[m[32m                            <div class="mb-3">[m
+[32m+[m[32m                                <label for="id_confirm_password" class="form-label">{{ form_usuario.confirm_password.label }}</label>[m
+[32m+[m[32m                                {{ form_usuario.confirm_password }}[m
+[32m+[m[32m                            </div>[m
+[32m+[m
+[32m+[m[32m                            <div class="d-flex justify-content-center">[m
+[32m+[m[32m                                <button type="submit" class="btn btn-primary w-auto">Crear Usuario</button>[m
+[32m+[m[32m                                <br>[m
+[32m+[m[41m                                [m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                            <div class="d-flex justify-content-center">[m
+[32m+[m[32m                                <a href="/">Salir</a>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[41m                            [m
+[32m+[m[32m                        </form>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m
+[32m+[m[32m    <!-- Scripts de Bootstrap 5 -->[m
+[32m+[m[32m    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Crear_Usuario_Form.html b/EcomerceApp/Templates/Crear_Usuario_Form.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..99cba0d[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Crear_Usuario_Form.html[m
+[36m@@ -0,0 +1,111 @@[m
+[32m+[m[32m{% load static %}[m
+[32m+[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="es">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>Crear Usuario</title>[m
+[32m+[m[32m    {% block extra_css %}[m
+[32m+[m[32m    <link rel="stylesheet" href="{% static 'Styles/usuario_cliente.css' %}">[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m    <div class="registration-container">[m
+[32m+[m[32m        <div class="registration-card">[m
+[32m+[m[32m            <!-- Encabezado -->[m
+[32m+[m[32m            <div class="registration-header">[m
+[32m+[m[32m                <h2>Registro de Usuario</h2>[m
+[32m+[m[32m            </div>[m
+[32m+[m[41m            [m
+[32m+[m[32m            <!-- Cuerpo -->[m
+[32m+[m[32m            <div class="registration-body">[m
+[32m+[m[32m                <form method="POST" enctype="multipart/form-data">[m
+[32m+[m[32m                    {% csrf_token %}[m
+[32m+[m
+[32m+[m[32m                    <!-- Nombre -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="first_name">Nombre</label>[m
+[32m+[m[32m                        {{ form.first_name }}[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Apellido -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="last_name">Apellido</label>[m
+[32m+[m[32m                        {{ form.last_name }}[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Nombre de Usuario -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="username">Username</label>[m
+[32m+[m[32m                        {{ form.username }}[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Correo Electrónico -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="email">Correo Electrónico</label>[m
+[32m+[m[32m                        {{ form.email }}[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Contraseña -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="password">Contraseña</label>[m
+[32m+[m[32m                        {{ form.password }}[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Teléfono[m[41m [m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="telefono">Teléfono</label>[m
+[32m+[m[32m                        {{ form.telefono }}[m
+[32m+[m[32m                    </div>-->[m
+[32m+[m
+[32m+[m[32m                    <!-- Dirección[m[41m [m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="direccion">Dirección</label>[m
+[32m+[m[32m                        {{ form.direccion }}[m
+[32m+[m[32m                    </div>-->[m
+[32m+[m
+[32m+[m[32m                   <!-- Campo de Fecha de Nacimiento -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>[m
+[32m+[m[32m                        {{ form.fecha_nacimiento }}[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Género -->[m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="genero">Género</label>[m
+[32m+[m[32m                        <div class="custom-radio-group">[m
+[32m+[m[32m                            {{ form.genero }}[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m
+[32m+[m[32m                    <!-- Foto de Perfil[m[41m [m
+[32m+[m[32m                    <div class="form-group">[m
+[32m+[m[32m                        <label for="foto_perfil">Foto de Perfil</label>[m
+[32m+[m[32m                        {{ form.foto_perfil }}[m
+[32m+[m[32m                    </div>-->[m
+[32m+[m
+[32m+[m[32m                    <!-- Botón de Enviar -->[m
+[32m+[m[32m                    <button type="submit" class="submit-button">Crear Usuario</button>[m
+[32m+[m[41m                    [m
+[32m+[m[32m                    <!-- Enlace para salir -->[m
+[32m+[m[32m                    <a href="/" class="exit-link">Salir</a>[m
+[32m+[m[32m                </form>[m
+[32m+[m
+[32m+[m[32m                {% if form.errors %}[m
+[32m+[m[32m                <div class="error-container">[m
+[32m+[m[32m                    <ul>[m
+[32m+[m[32m                        {% for field in form %}[m
+[32m+[m[32m                            {% for error in field.errors %}[m
+[32m+[m[32m                                <li>{{ error }}</li>[m
+[32m+[m[32m                            {% endfor %}[m
+[32m+[m[32m                        {% endfor %}[m
+[32m+[m[32m                    </ul>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                {% endif %}[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Detalle_Producto.html b/EcomerceApp/Templates/Detalle_Producto.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a0fb551[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Detalle_Producto.html[m
+[36m@@ -0,0 +1,171 @@[m
+[32m+[m[32m{% extends 'layouts/Base.html' %}[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m{% block title %}Detalles del Producto{% endblock %}[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m<div class="container py-5">[m
+[32m+[m[32m    <!-- Detalle del Producto -->[m
+[32m+[m[32m    <div class="row g-4 mb-5">[m
+[32m+[m[32m        <!-- Imágenes Adicionales -->[m
+[32m+[m[32m        <div class="col-lg-1 order-lg-1 order-2">[m
+[32m+[m[32m            <div class="d-flex flex-lg-column gap-2 h-100">[m
+[32m+[m[32m                {% for imagen in producto.Imagenes_Adicionales.all %}[m
+[32m+[m[32m                <div class="product-thumbnail cursor-pointer border rounded-3 p-2 {% if forloop.first %}border-primary{% endif %}">[m
+[32m+[m[32m                    <img src="{{ imagen.imagen.url }}"[m[41m [m
+[32m+[m[32m                         alt="Thumbnail {{ forloop.counter }}"[m[41m [m
+[32m+[m[32m                         class="img-fluid rounded-2"[m[41m [m
+[32m+[m[32m                         style="aspect-ratio: 1; object-fit: cover;">[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                {% endfor %}[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <!-- Imagen Principal -->[m
+[32m+[m[32m        <div class="col-lg-5 order-lg-2 order-1">[m
+[32m+[m[32m            <div class="position-relative">[m
+[32m+[m[32m                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">[m
+[32m+[m[32m                    <img src="{{ producto.imagen.url }}"[m[41m [m
+[32m+[m[32m                         alt="{{ producto.name }}"[m[41m [m
+[32m+[m[32m                         class="img-fluid"[m[41m [m
+[32m+[m[32m                         style="aspect-ratio: 1; object-fit: cover;">[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <button class="btn btn-light rounded-circle position-absolute top-0 end-0 m-3 p-2">[m
+[32m+[m[32m                    <i class="bi bi-heart"></i>[m
+[32m+[m[32m                </button>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <!-- Detalles del Producto -->[m
+[32m+[m[32m        <div class="col-lg-6 order-lg-3 order-3">[m
+[32m+[m[32m            <div class="card border-0 shadow-sm rounded-4">[m
+[32m+[m[32m                <div class="card-body p-4">[m
+[32m+[m[32m                    <!-- Título y Precio -->[m
+[32m+[m[32m                    <h1 class="h3 mb-2">{{ producto.name }}</h1>[m
+[32m+[m[32m                    <div class="d-flex align-items-center gap-3 mb-4">[m
+[32m+[m[32m                        <h2 class="h4 text-primary mb-0">${{ producto.precio }}</h2>[m
+[32m+[m[32m                        {% if producto.precio_anterior %}[m
+[32m+[m[32m                        <span class="text-decoration-line-through text-muted">${{ producto.precio_anterior }}</span>[m
+[32m+[m[32m                        {% endif %}[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Seleccionar Cantidades -->[m
+[32m+[m[32m                    <div class="mb-4">[m
+[32m+[m[32m                        <label class="form-label">Cantidad</label>[m
+[32m+[m[32m                        <div class="d-flex align-items-center gap-3" style="width: fit-content;">[m
+[32m+[m[32m                            <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px;">[m
+[32m+[m[32m                                <i class="bi bi-dash"></i>[m
+[32m+[m[32m                            </button>[m
+[32m+[m[32m                            <input type="number" class="form-control text-center" value="1" min="1" style="width: 80px;">[m
+[32m+[m[32m                            <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px;">[m
+[32m+[m[32m                                <i class="bi bi-plus"></i>[m
+[32m+[m[32m                            </button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Botones de Acción -->[m
+[32m+[m[32m                    <div class="d-grid gap-2 mb-4">[m
+[32m+[m[32m                        <button class="btn btn-primary py-3">[m
+[32m+[m[32m                            <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito[m
+[32m+[m[32m                        </button>[m
+[32m+[m[32m                        <button class="btn btn-outline-primary py-3">[m
+[32m+[m[32m                            <i class="bi bi-heart me-2"></i>Agregar a Lista de Deseos[m
+[32m+[m[32m                        </button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Descripción del Producto -->[m
+[32m+[m[32m                    <div class="mb-4">[m
+[32m+[m[32m                        <h3 class="h5 mb-3">Descripción del Producto</h3>[m
+[32m+[m[32m                        <p class="text-muted">{{ producto.descripcion }}</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Métodos de Pago -->[m
+[32m+[m[32m                    <div class="border rounded-3 p-3 bg-light">[m
+[32m+[m[32m                        <h3 class="h5 mb-3">Métodos de Pago</h3>[m
+[32m+[m[32m                        <div class="d-flex gap-2 flex-wrap">[m
+[32m+[m[32m                            <img src="{% static 'img/visa.svg' %}" alt="Visa" height="30">[m
+[32m+[m[32m                            <img src="{% static 'img/mc_symbol.svg' %}" alt="Mastercard" height="30">[m
+[32m+[m[32m                            <img src="{% static 'img/paypal.svg' %}" alt="PayPal" height="30">[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    <!-- Productos Relacionados -->[m
+[32m+[m[32m    <div class="mb-5">[m
+[32m+[m[32m        <h2 class="h4 mb-4">Productos Relacionados</h2>[m
+[32m+[m[32m        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">[m
+[32m+[m[32m            {% for producto in productos_relacionados %}[m
+[32m+[m[32m            <div class="col">[m
+[32m+[m[32m                <div class="card h-100 border-0 shadow-sm rounded-4 product-card">[m
+[32m+[m[32m                    <div class="position-relative">[m
+[32m+[m[32m                        <img src="{{ producto.imagen.url }}"[m[41m [m
+[32m+[m[32m                             class="card-img-top rounded-top-4"[m[41m [m
+[32m+[m[32m                             alt="{{ producto.name }}"[m[41m [m
+[32m+[m[32m                             style="aspect-ratio: 1; object-fit: cover;">[m
+[32m+[m[32m                        <button class="btn btn-light btn-sm rounded-circle position-absolute top-0 end-0 m-3">[m
+[32m+[m[32m                            <i class="bi bi-heart"></i>[m
+[32m+[m[32m                        </button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <div class="card-body p-3">[m
+[32m+[m[32m                        <h5 class="card-title mb-1">{{ producto.name }}</h5>[m
+[32m+[m[32m                        <p class="text-primary mb-2">${{ producto.precio }}</p>[m
+[32m+[m[32m                        <button class="btn btn-primary w-100">[m
+[32m+[m[32m                            <i class="bi bi-cart-plus me-2"></i>Agregar[m
+[32m+[m[32m                        </button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            {% endfor %}[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</div>[m
+[32m+[m[32m<style>[m
+[32m+[m[32m    .product-thumbnail {[m
+[32m+[m[32m        transition: all 0.2s ease-in-out;[m
+[32m+[m[32m        cursor: pointer;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .product-thumbnail:hover {[m
+[32m+[m[32m        border-color: #4F46E5 !important;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .product-card {[m
+[32m+[m[32m        transition: transform 0.2s ease-in-out;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .product-card:hover {[m
+[32m+[m[32m        transform: translateY(-5px);[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn {[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary {[m
+[32m+[m[32m        background-color: #4F46E5;[m
+[32m+[m[32m        border-color: #4F46E5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary:hover {[m
+[32m+[m[32m        background-color: #4338CA;[m
+[32m+[m[32m        border-color: #4338CA;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .text-primary {[m
+[32m+[m[32m        color: #4F46E5 !important;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-outline-primary {[m
+[32m+[m[32m        border-color: #4F46E5;[m
+[32m+[m[32m        color: #4F46E5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-outline-primary:hover {[m
+[32m+[m[32m        background-color: #4F46E5;[m
+[32m+[m[32m        border-color: #4F46E5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .form-control:focus {[m
+[32m+[m[32m        border-color: #4F46E5;[m
+[32m+[m[32m        box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .cursor-pointer {[m
+[32m+[m[32m        cursor: pointer;[m
+[32m+[m[32m    }[m
+[32m+[m[32m</style>[m
+[32m+[m[32m{% endblock %}[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Index.html b/EcomerceApp/Templates/Index.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e10db38[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Index.html[m
+[36m@@ -0,0 +1,117 @@[m
+[32m+[m[32m{% extends 'layouts/base.html' %}[m
+[32m+[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="en">[m
+[32m+[m[32m<head>[m
+[32m+[m[41m    [m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>{% block title %}Index{% endblock %}</title>[m
+[32m+[m[32m    <link rel="stylesheet" href="{% static 'Styles/index.css' %}">[m
+[32m+[m[32m    {% block extra_css %}[m
+[32m+[m[32m    <link rel="stylesheet" href="{% static 'Styles/index.css' %}">[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m  <!-- Hero Section -->[m
+[32m+[m[32m  <section class="hero-section">[m
+[32m+[m[32m    <div class="container">[m
+[32m+[m[32m        <h1>Bienvenidos a EguerahaStore</h1>[m
+[32m+[m[32m        <p>Descubre productos a los mejores costos</p>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</section>[m
+[32m+[m[32m  <!-- Features Section -->[m
+[32m+[m[32m  <section class="features">[m
+[32m+[m[32m    <div class="container">[m
+[32m+[m[32m        <div class="features-grid">[m
+[32m+[m[32m            <div class="feature-item">[m
+[32m+[m[32m                <img src="{% static 'img/icon-shein.png' %}" alt="Pedidos desde la comodidad de tu hogar" class="feature-icon">[m
+[32m+[m[32m                <h4>Productos de Shein</h4>[m
+[32m+[m[32m                <p>Pedidos desde la comodidad de tu hogar</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="feature-item">[m
+[32m+[m[32m              <img src="{% static 'img/icon-envio.png' %}" alt="Envio Zona Gran Asuncion" class="feature-icon">[m
+[32m+[m[32m                <h4>Envio Zona Gran Asuncion</h4>[m
+[32m+[m[32m                <p>Envio habilitado para la zona de Gran Asuncion</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="feature-item">[m
+[32m+[m[32m              <img src="{% static 'img/Icon-Chat.png' %}" alt="Asesoramiento en linea" class="feature-icon">[m
+[32m+[m[32m                <h4>Asesoramiento en linea</h4>[m
+[32m+[m[32m                <p>Todos los detalles lo podes consultar en linea</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</section>[m
+[32m+[m
+[32m+[m[32m<!-- Products Section -->[m
+[32m+[m[32m<section class="products">[m
+[32m+[m[32m    <div class="container">[m
+[32m+[m[32m        <h2>Productos Destacados</h2>[m
+[32m+[m[32m        <div class="products-grid">[m
+[32m+[m[32m            <!-- Product Card 1 -->[m
+[32m+[m[32m            <div class="product-card">[m
+[32m+[m[32m                <img src="/placeholder.svg" alt="Producto 1" class="product-image">[m
+[32m+[m[32m                <div class="product-content">[m
+[32m+[m[32m                    <h5>Producto 1</h5>[m
+[32m+[m[32m                    <p>Descripcion</p>[m
+[32m+[m[32m                    <p class="price">$$$$$</p>[m
+[32m+[m[32m                    <div class="product-actions">[m
+[32m+[m[32m                        <button class="btn-favorite"><i class="heart-icon"></i></button>[m
+[32m+[m[32m                        <button class="btn-primary">Agregar al carrito</button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m
+[32m+[m[32m            <!-- Product Card 2 -->[m
+[32m+[m[32m            <div class="product-card">[m
+[32m+[m[32m                <img src="/placeholder.svg" alt="Producto 2" class="product-image">[m
+[32m+[m[32m                <div class="product-content">[m
+[32m+[m[32m                    <h5>Producto 2</h5>[m
+[32m+[m[32m                    <p>Descripcion</p>[m
+[32m+[m[32m                    <p class="price">$$$$$</p>[m
+[32m+[m[32m                    <div class="product-actions">[m
+[32m+[m[32m                        <button class="btn-favorite"><i class="heart-icon"></i></button>[m
+[32m+[m[32m                        <button class="btn-primary">Agregar al carrito</button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m
+[32m+[m[32m            <!-- Product Card 3 -->[m
+[32m+[m[32m            <div class="product-card">[m
+[32m+[m[32m                <img src="/placeholder.svg" alt="Producto 3" class="product-image">[m
+[32m+[m[32m                <div class="product-content">[m
+[32m+[m[32m                    <h5>Producto 3</h5>[m
+[32m+[m[32m                    <p>Descripcion</p>[m
+[32m+[m[32m                    <p class="price">$$$$$</p>[m
+[32m+[m[32m                    <div class="product-actions">[m
+[32m+[m[32m                        <button class="btn-favorite"><i class="heart-icon"></i></button>[m
+[32m+[m[32m                        <button class="btn-primary">Agregar al carrito</button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m
+[32m+[m[32m            <!-- Product Card 4 -->[m
+[32m+[m[32m            <div class="product-card">[m
+[32m+[m[32m                <img src="/placeholder.svg" alt="Producto 4" class="product-image">[m
+[32m+[m[32m                <div class="product-content">[m
+[32m+[m[32m                    <h5>Producto 4</h5>[m
+[32m+[m[32m                    <p>Descripcion</p>[m
+[32m+[m[32m                    <p class="price">$$$$$</p>[m
+[32m+[m[32m                    <div class="product-actions">[m
+[32m+[m[32m                        <button class="btn-favorite"><i class="heart-icon"></i></button>[m
+[32m+[m[32m                        <button class="btn-primary">Agregar al carrito</button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</section>[m
+[32m+[m[32m{% block extra_js %}[m
+[32m+[m[32m<script src="{% static 'Scripts/script.js' %}"></script>[m
+[32m+[m[32m{% endblock %}[m
+[32m+[m
+[32m+[m[32m{% endblock %}[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Lista_de_deseos.html b/EcomerceApp/Templates/Lista_de_deseos.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..34f3293[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Lista_de_deseos.html[m
+[36m@@ -0,0 +1,105 @@[m
+[32m+[m[32m{% extends 'layouts/Base.html' %}[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m{% block title %}My Wish List{% endblock %}[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m<div class="container py-5">[m
+[32m+[m[32m    <div class="row mb-4">[m
+[32m+[m[32m        <div class="col-12">[m
+[32m+[m[32m            <h1 class="display-4 text-primary mb-3">Mi Lista de deseos</h1>[m
+[32m+[m[32m            <hr class="text-muted">[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    {% if lista_item %}[m
+[32m+[m[32m    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">[m
+[32m+[m[32m        {% for item in lista_item %}[m
+[32m+[m[32m        <div class="col">[m
+[32m+[m[32m            <div class="card h-100 shadow-sm hover-card">[m
+[32m+[m[32m                <div class="card-body">[m
+[32m+[m[32m                    <h5 class="card-title text-dark mb-3">{{ item.producto.name }}</h5>[m
+[32m+[m[32m                    <p class="card-text text-muted">{{ item.producto.descripcion }}</p>[m
+[32m+[m[32m                    <div class="d-flex justify-content-between align-items-center mt-3">[m
+[32m+[m[32m                        <button class="btn btn-outline-primary btn-sm">[m
+[32m+[m[32m                            <i class="bi bi-cart-plus"></i> Añadir al carrito[m
+[32m+[m[32m                        </button>[m
+[32m+[m[32m                        <form action="{% url 'remover_de_lista_deseos' item.id %}" method="POST">[m
+[32m+[m[32m                            {% csrf_token %}[m
+[32m+[m[32m                            <button type="submit" class="btn btn-outline-danger btn-sm">[m
+[32m+[m[32m                                <i class="bi bi-trash"></i> Remover[m
+[32m+[m[32m                            </button>[m
+[32m+[m[32m                        </form>[m
+[32m+[m[41m                        [m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    {% else %}[m
+[32m+[m[32m    <div class="row">[m
+[32m+[m[32m        <div class="col-12">[m
+[32m+[m[32m            <div class="alert alert-info text-center p-5" role="alert">[m
+[32m+[m[32m                <i class="bi bi-heart" style="font-size: 2rem;"></i>[m
+[32m+[m[32m                <h4 class="alert-heading mt-3">Tu lista de deseos esta vacía</h4>[m
+[32m+[m[32m                <p class="mb-0">¡Comienza a agregar artículos a su lista de deseos navegando por nuestros productos!</p>[m
+[32m+[m[32m                <a href="{% url 'Productos' %}" class="btn btn-primary mt-4">Explorar productos</a>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    {% endif %}[m
+[32m+[m[32m</div>[m
+[32m+[m[32m<!-- Add this to your base template if not already present -->[m
+[32m+[m[32m<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">[m
+[32m+[m[32m<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">[m
+[32m+[m[32m<style>[m
+[32m+[m[32m    .hover-card {[m
+[32m+[m[32m        transition: transform 0.2s ease-in-out;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .hover-card:hover {[m
+[32m+[m[32m        transform: translateY(-5px);[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .card {[m
+[32m+[m[32m        border-radius: 15px;[m
+[32m+[m[32m        border: none;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn {[m
+[32m+[m[32m        border-radius: 20px;[m
+[32m+[m[32m        padding: 0.375rem 1rem;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .alert {[m
+[32m+[m[32m        border-radius: 15px;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .display-4 {[m
+[32m+[m[32m        font-weight: 600;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    /* Custom color scheme */[m
+[32m+[m[32m    .text-primary {[m
+[32m+[m[32m        color: #000000 !important;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary {[m
+[32m+[m[32m        background-color: #6E59A5;[m
+[32m+[m[32m        border-color: #6E59A5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary:hover {[m
+[32m+[m[32m        background-color: #5a478a;[m
+[32m+[m[32m        border-color: #5a478a;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-outline-primary {[m
+[32m+[m[32m        color: #6E59A5;[m
+[32m+[m[32m        border-color: #6E59A5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-outline-primary:hover {[m
+[32m+[m[32m        background-color: #6E59A5;[m
+[32m+[m[32m        border-color: #6E59A5;[m
+[32m+[m[32m    }[m
+[32m+[m[32m</style>[m
+[32m+[m[32m{% endblock %}[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Perfil_Usuario.html b/EcomerceApp/Templates/Perfil_Usuario.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..487f0a3[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Perfil_Usuario.html[m
+[36m@@ -0,0 +1,262 @@[m
+[32m+[m[32m{% extends 'layouts/Base.html' %}[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m{% block title %}Perfil de Usuario{% endblock %}[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m{% if user.is_authenticated %}[m
+[32m+[m[32m<div class="container py-5">[m
+[32m+[m[32m    <div class="row">[m
+[32m+[m[32m        <div class="col-lg-12">[m
+[32m+[m[32m            <div class="card shadow-sm border-0 rounded-3 mb-4">[m
+[32m+[m[32m                <div class="card-body p-4">[m
+[32m+[m[32m                    <div class="d-flex align-items-center mb-4">[m
+[32m+[m[32m                        <img src="{% static 'images/profile-placeholder.svg' %}"[m[41m [m
+[32m+[m[32m                             alt="Foto de perfil"[m[41m [m
+[32m+[m[32m                             class="rounded-circle me-3"[m
+[32m+[m[32m                             style="width: 80px; height: 80px; object-fit: cover;">[m
+[32m+[m[32m                        <h1 class="h3 mb-0 text-primary">{{ user.username }}</h1>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Información Personal -->[m
+[32m+[m[32m                    <div class="mb-5">[m
+[32m+[m[32m                        <h2 class="h5 mb-4 text-secondary">Información Personal</h2>[m
+[32m+[m[32m                        <div class="row g-4">[m
+[32m+[m[32m                            <div class="col-md-4">[m
+[32m+[m[32m                                <div class="d-flex justify-content-between align-items-center">[m
+[32m+[m[32m                                    <div>[m
+[32m+[m[32m                                        <div class="text-muted small">Nombre</div>[m
+[32m+[m[32m                                        <div>Nombre de Usuario</div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                </div>[m[41m  [m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                            <div class="col-md-4">[m
+[32m+[m[32m                                <div class="d-flex justify-content-between align-items-center">[m
+[32m+[m[32m                                    <div>[m
+[32m+[m[32m                                        <div class="text-muted small">Email</div>[m
+[32m+[m[32m                                        <div>Correo@</div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                    <button class="btn btn-link text-decoration-none p-0">Editar</button>[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                            <div class="col-md-4">[m
+[32m+[m[32m                                <div class="d-flex justify-content-between align-items-center">[m
+[32m+[m[32m                                    <div>[m
+[32m+[m[32m                                        <div class="text-muted small">Teléfono</div>[m
+[32m+[m[32m                                        <div>99999999</div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                    <button class="btn btn-link text-decoration-none p-0">Editar</button>[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Direcciones -->[m
+[32m+[m[32m                    <div class="mb-5">[m
+[32m+[m[32m                        <div class="d-flex justify-content-between align-items-center mb-4">[m
+[32m+[m[32m                            <h2 class="h5 mb-0 text-secondary">Direcciones</h2>[m
+[32m+[m[32m                            <button class="btn btn-outline-primary btn-sm">[m
+[32m+[m[32m                                <i class="bi bi-plus-lg me-1"></i>Agregar dirección[m
+[32m+[m[32m                            </button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                        <div class="card bg-light border-0">[m
+[32m+[m[32m                            <div class="card-body">[m
+[32m+[m[32m                                <div class="d-flex justify-content-between align-items-center">[m
+[32m+[m[32m                                    <div>[m
+[32m+[m[32m                                        <div class="badge bg-primary mb-2">Dirección principal</div>[m
+[32m+[m[32m                                        <div>Direccion del cliente</div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                    <button class="btn btn-link text-decoration-none">Editar</button>[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Pedidos Recientes -->[m
+[32m+[m[32m                    <div class="mb-5">[m
+[32m+[m[32m                        <h2 class="h5 mb-4 text-secondary">Pedidos Recientes</h2>[m
+[32m+[m[32m                        <div class="table-responsive">[m
+[32m+[m[32m                            <table class="table table-borderless align-middle">[m
+[32m+[m[32m                                <thead class="bg-light">[m
+[32m+[m[32m                                    <tr>[m
+[32m+[m[32m                                        <th scope="col" class="ps-4">Nº Pedido</th>[m
+[32m+[m[32m                                        <th scope="col">Fecha</th>[m
+[32m+[m[32m                                        <th scope="col">Total</th>[m
+[32m+[m[32m                                        <th scope="col">Estado</th>[m
+[32m+[m[32m                                        <th scope="col" class="text-end pe-4">Acciones</th>[m
+[32m+[m[32m                                    </tr>[m
+[32m+[m[32m                                </thead>[m
+[32m+[m[32m                                <tbody>[m
+[32m+[m[32m                                    <tr class="border-bottom">[m
+[32m+[m[32m                                        <td class="ps-4">#12345</td>[m
+[32m+[m[32m                                        <td>Fecha del pedido</td>[m
+[32m+[m[32m                                        <td>$$$$$$</td>[m
+[32m+[m[32m                                        <td><span class="badge bg-success">Enviado</span></td>[m
+[32m+[m[32m                                        <td class="text-end pe-4">[m
+[32m+[m[32m                                            <button class="btn btn-link text-decoration-none p-0">Ver detalles</button>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                    </tr>[m
+[32m+[m[32m                                    <tr class="border-bottom">[m
+[32m+[m[32m                                        <td class="ps-4">#12344</td>[m
+[32m+[m[32m                                        <td>Fecha del pedido</td>[m
+[32m+[m[32m                                        <td>$$$$$$</td>[m
+[32m+[m[32m                                        <td><span class="badge bg-info">Entregado</span></td>[m
+[32m+[m[32m                                        <td class="text-end pe-4">[m
+[32m+[m[32m                                            <button class="btn btn-link text-decoration-none p-0">Ver detalles</button>[m
+[32m+[m[32m                                        </td>[m
+[32m+[m[32m                                    </tr>[m
+[32m+[m[32m                                </tbody>[m
+[32m+[m[32m                            </table>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Lista de Deseos -->[m
+[32m+[m[32m                    <div class="mb-5">[m
+[32m+[m[32m                        <h2 class="h5 mb-4 text-secondary">Lista de Deseos</h2>[m
+[32m+[m[32m                        <div class="row g-4">[m
+[32m+[m[32m                            <div class="col-md-6">[m
+[32m+[m[32m                                <div class="card h-100 border-0 bg-light">[m
+[32m+[m[32m                                    <div class="card-body">[m
+[32m+[m[32m                                        <div class="d-flex justify-content-between">[m
+[32m+[m[32m                                            <div>[m
+[32m+[m[32m                                                <h6 class="mb-1">Product A</h6>[m
+[32m+[m[32m                                                <div class="text-primary fw-medium">$$$$$</div>[m
+[32m+[m[32m                                            </div>[m
+[32m+[m[32m                                            <div class="d-flex gap-2">[m
+[32m+[m[32m                                                <button class="btn btn-primary btn-sm">Agregar al carrito</button>[m
+[32m+[m[32m                                                <button class="btn btn-outline-danger btn-sm">[m
+[32m+[m[32m                                                    <i class="bi bi-trash"></i>[m
+[32m+[m[32m                                                </button>[m
+[32m+[m[32m                                            </div>[m
+[32m+[m[32m                                        </div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                            <div class="col-md-6">[m
+[32m+[m[32m                                <div class="card h-100 border-0 bg-light">[m
+[32m+[m[32m                                    <div class="card-body">[m
+[32m+[m[32m                                        <div class="d-flex justify-content-between">[m
+[32m+[m[32m                                            <div>[m
+[32m+[m[32m                                                <h6 class="mb-1">Product B</h6>[m
+[32m+[m[32m                                                <div class="text-primary fw-medium">$$$$</div>[m
+[32m+[m[32m                                            </div>[m
+[32m+[m[32m                                            <div class="d-flex gap-2">[m
+[32m+[m[32m                                                <button class="btn btn-primary btn-sm">Agregar al carrito</button>[m
+[32m+[m[32m                                                <button class="btn btn-outline-danger btn-sm">[m
+[32m+[m[32m                                                    <i class="bi bi-trash"></i>[m
+[32m+[m[32m                                                </button>[m
+[32m+[m[32m                                            </div>[m
+[32m+[m[32m                                        </div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Métodos de Pago -->[m
+[32m+[m[32m                    <div class="mb-5">[m
+[32m+[m[32m                        <div class="d-flex justify-content-between align-items-center mb-4">[m
+[32m+[m[32m                            <h2 class="h5 mb-0 text-secondary">Métodos de Pago</h2>[m
+[32m+[m[32m                            <button class="btn btn-outline-primary btn-sm">[m
+[32m+[m[32m                                <i class="bi bi-plus-lg me-1"></i>Agregar método de pago[m
+[32m+[m[32m                            </button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                        <div class="card bg-light border-0">[m
+[32m+[m[32m                            <div class="card-body">[m
+[32m+[m[32m                                <div class="d-flex justify-content-between align-items-center">[m
+[32m+[m[32m                                    <div class="d-flex align-items-center">[m
+[32m+[m[32m                                        <i class="bi bi-credit-card me-2"></i>[m
+[32m+[m[32m                                        <div>Visa Card **** 1234</div>[m
+[32m+[m[32m                                    </div>[m
+[32m+[m[32m                                    <button class="btn btn-outline-danger btn-sm">[m
+[32m+[m[32m                                        <i class="bi bi-trash"></i>[m
+[32m+[m[32m                                    </button>[m
+[32m+[m[32m                                </div>[m
+[32m+[m[32m                            </div>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Configuración -->[m
+[32m+[m[32m                    <div class="mb-5">[m
+[32m+[m[32m                        <h2 class="h5 mb-4 text-secondary">Configuración</h2>[m
+[32m+[m[32m                        <div class="list-group list-group-flush">[m
+[32m+[m[32m                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">[m
+[32m+[m[32m                                Cambiar contraseña[m
+[32m+[m[32m                                <i class="bi bi-chevron-right"></i>[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">[m
+[32m+[m[32m                                Preferencias de notificaciones[m
+[32m+[m[32m                                <i class="bi bi-chevron-right"></i>[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0 text-danger">[m
+[32m+[m[32m                                Eliminar cuenta[m
+[32m+[m[32m                                <i class="bi bi-chevron-right"></i>[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <!-- Ayuda y Soporte -->[m
+[32m+[m[32m                    <div>[m
+[32m+[m[32m                        <h2 class="h5 mb-4 text-secondary">Ayuda y Soporte</h2>[m
+[32m+[m[32m                        <div class="list-group list-group-flush">[m
+[32m+[m[32m                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">[m
+[32m+[m[32m                                Preguntas frecuentes[m
+[32m+[m[32m                                <i class="bi bi-chevron-right"></i>[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">[m
+[32m+[m[32m                                Contactar soporte[m
+[32m+[m[32m                                <i class="bi bi-chevron-right"></i>[m
+[32m+[m[32m                            </a>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</div>[m
+[32m+[m[32m<style>[m
+[32m+[m[32m    .table th {[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m        text-transform: uppercase;[m
+[32m+[m[32m        font-size: 0.875rem;[m
+[32m+[m[32m        letter-spacing: 0.025em;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .badge {[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn {[m
+[32m+[m[32m        padding-top: 0.625rem;[m
+[32m+[m[32m        padding-bottom: 0.625rem;[m
+[32m+[m[32m        font-weight: 500;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-sm {[m
+[32m+[m[32m        padding-top: 0.375rem;[m
+[32m+[m[32m        padding-bottom: 0.375rem;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary {[m
+[32m+[m[32m        background-color: #4F46E5;[m
+[32m+[m[32m        border-color: #4F46E5;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .btn-primary:hover {[m
+[32m+[m[32m        background-color: #4338CA;[m
+[32m+[m[32m        border-color: #4338CA;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .text-primary {[m
+[32m+[m[32m        color: #4F46E5 !important;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .card {[m
+[32m+[m[32m        background-color: #ffffff;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .bg-light {[m
+[32m+[m[32m        background-color: #F9FAFB !important;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .list-group-item-action:hover {[m
+[32m+[m[32m        background-color: #F9FAFB;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    .list-group-item-action:active {[m
+[32m+[m[32m        background-color: #F3F4F6;[m
+[32m+[m[32m    }[m
+[32m+[m[32m</style>[m
+[32m+[m[32m{% endif %}[m
+[32m+[m[32m{% endblock %}[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/Productos.html b/EcomerceApp/Templates/Productos.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..838d471[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/Productos.html[m
+[36m@@ -0,0 +1,62 @@[m
+[32m+[m[32m{% extends 'layouts/base.html' %}[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m{% load humanize %}[m
+[32m+[m[32m{% block title %}Productos{% endblock %}[m
+[32m+[m[32m<head>[m
+[32m+[m[41m    [m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    {% block extra_css %}[m
+[32m+[m[32m    <link rel="stylesheet" href="{% static 'Styles/product.css' %}">[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m</head>[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m<div class="products-container">[m
+[32m+[m[32m    <h2 class="products-title">Nuestros Productos</h2>[m
+[32m+[m[41m    [m
+[32m+[m[32m    <form method="GET" action="{% url 'Productos' %}" class="search-form">[m
+[32m+[m[32m        <div class="search-group">[m
+[32m+[m[32m            <input type="text" name="q" class="search-input" placeholder="Buscar productos..." value="{{ query|default:'' }}">[m
+[32m+[m[32m            <button type="submit" class="search-button">Buscar</button>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </form>[m
+[32m+[m[32m    <div class="products-grid">[m
+[32m+[m[32m        {% for x in productos %}[m
+[32m+[m[32m        <div class="product-card">[m
+[32m+[m[32m            <div class="product-layout">[m
+[32m+[m[32m                <div class="product-image-container">[m
+[32m+[m[32m                    {% if x.imagen %}[m
+[32m+[m[32m                    <img src="{{ x.imagen.url }}" class="product-image" alt="{{ x.name }}">[m
+[32m+[m[32m                    {% else %}[m
+[32m+[m[32m                    <img src="{% static 'placeholder.svg' %}" alt="NO-IMAGEN" class="product-image">[m
+[32m+[m[32m                    {% endif %}[m
+[32m+[m[32m                </div>[m
+[32m+[m[41m                [m
+[32m+[m[32m                <div class="product-details">[m
+[32m+[m[32m                    <h5><a href="{% url 'Productos_Detalle' x.id %}" class="product-title">{{ x.name }}</a></h5>[m
+[32m+[m[32m                    <p class="product-description">{{ x.descripcion }}</p>[m
+[32m+[m[32m                    <h6 class="product-price">Precio: ${{ x.precio|floatformat:0|intcomma }}</h6>[m
+[32m+[m[41m                    [m
+[32m+[m[32m                    <div class="product-actions">[m
+[32m+[m[32m                        <a href="{% url 'Lista_de_deseo' x.id %}" class="wishlist-button">[m
+[32m+[m[32m                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">[m
+[32m+[m[32m                                <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>[m
+[32m+[m[32m                            </svg>[m
+[32m+[m[32m                        </a>[m
+[32m+[m[41m                        [m
+[32m+[m[32m                        <a href="{% url 'Carrito_de_compras' x.id %}" class="cart-button">[m
+[32m+[m[32m                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">[m
+[32m+[m[32m                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>[m
+[32m+[m[32m                            </svg>[m
+[32m+[m[32m                        </a>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        {% endfor %}[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</div>[m
+[32m+[m[32m{% endblock %}[m
+[32m+[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/footer.html b/EcomerceApp/Templates/footer.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..cd0182c[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/footer.html[m
+[36m@@ -0,0 +1,47 @@[m
+[32m+[m[32m{% load static %}[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="en">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    {% block extra_css %}[m
+[32m+[m[32m    <link rel="stylesheet" href="{% static 'Styles/index.css' %}">[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m    {% block content %}[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m    <!-- Footer -->[m
+[32m+[m[32m    <footer class="footer">[m
+[32m+[m[32m      <div class="container">[m
+[32m+[m[32m          <div class="footer-grid">[m
+[32m+[m[32m              <div class="footer-section">[m
+[32m+[m[32m                  <h3>Nosotros</h3>[m
+[32m+[m[32m                  <p>Ofrecemos productos de alta calidad, Nuestra misión es hacer que las compras sean fáciles y agiles.</p>[m
+[32m+[m[32m              </div>[m
+[32m+[m[32m              <div class="footer-section">[m
+[32m+[m[32m                  <h3>Enlaces</h3>[m
+[32m+[m[32m                  <ul>[m
+[32m+[m[32m                      <li><a href="#">Terms & Conditions</a></li>[m
+[32m+[m[32m                      <li><a href="#">Privacy Policy</a></li>[m
+[32m+[m[32m                      <li><a href="#">Shipping Information</a></li>[m
+[32m+[m[32m                      <li><a href="#">FAQs</a></li>[m
+[32m+[m[32m                  </ul>[m
+[32m+[m[32m              </div>[m
+[32m+[m[32m              <div class="footer-section">[m
+[32m+[m[32m                  <h3>Contactanos</h3>[m
+[32m+[m[32m                  <ul>[m
+[32m+[m[32m                      <li>Email: EguerahaStore@ecommerce.com</li>[m
+[32m+[m[32m                      <li>Tel: (+595) 994-948760</li>[m
+[32m+[m[32m                      <li>Dirección: Proximamente!</li>[m
+[32m+[m[32m                  </ul>[m
+[32m+[m[32m              </div>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m          <div class="footer-bottom">[m
+[32m+[m[32m              <p>&copy; 2024 EguerahaStore. All rights reserved.</p>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m  </footer>[m[41m [m
+[32m+[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/layouts/base.html b/EcomerceApp/Templates/layouts/base.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..93459cf[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/layouts/base.html[m
+[36m@@ -0,0 +1,79 @@[m
+[32m+[m[32m{% load static %}[m
+[32m+[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="en">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m  <meta charset="UTF-8">[m
+[32m+[m[32m  <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m  <title>{% block title %}{% endblock %}</title>[m
+[32m+[m[32m  <link rel="stylesheet" href="{% static 'Styles/index.css' %}">[m
+[32m+[m[32m  {% block extra_css %}[m
+[32m+[m[32m  {% endblock %}[m
+[32m+[m[41m [m
+[32m+[m
+[32m+[m[32m</head>[m[41m [m
+[32m+[m[32m<body>[m
+[32m+[m[32m      <!-- Navigation -->[m
+[32m+[m[32m      <nav class="navbar">[m
+[32m+[m[32m        <div class="container">[m
+[32m+[m[32m            <a href="#" class="navbar-brand">EguerahaStore</a>[m
+[32m+[m[32m            <button class="navbar-toggle" id="navToggle">[m
+[32m+[m[32m                <span></span>[m
+[32m+[m[32m                <span></span>[m
+[32m+[m[32m                <span></span>[m
+[32m+[m[32m            </button>[m
+[32m+[m[32m            <div class="navbar-menu" id="navMenu">[m
+[32m+[m[32m                <ul class="nav-list">[m
+[32m+[m[32m                    <li><a href="/" class="nav-link">Home</a></li>[m
+[32m+[m[32m                    <li><a href="{% url 'Productos' %}" class="nav-link">Productos</a></li>[m
+[32m+[m[32m                    <li><a href="{% url 'ver_carrito' %}" class="nav-link">[m
+[32m+[m[32m                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">[m
+[32m+[m[32m                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>[m
+[32m+[m[32m                        </svg>[m
+[32m+[m[32m                    </a></li>[m
+[32m+[m[32m                    <li><a href="{% url 'ver_lista_deseos' %}" class="nav-link">[m
+[32m+[m[32m                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">[m
+[32m+[m[32m                            <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>[m
+[32m+[m[32m                        </svg>[m
+[32m+[m[32m                    </a></li>[m
+[32m+[m[32m                {% if user.is_authenticated %}[m
+[32m+[m[32m                    <li>[m
+[32m+[m[32m                        <!-- Nombre de usuario -->[m
+[32m+[m[32m                        <a href="{% url 'Perfil_Usuario' %}" class="nav-link">@{{ user.username }}</a>[m
+[32m+[m[41m                        [m
+[32m+[m[32m                        <!-- Botón de cerrar sesión -->[m
+[32m+[m[32m                        <form action="{% url 'logout' %}" method="POST" class="ms-2 d-inline">[m
+[32m+[m[32m                            {% csrf_token %}[m
+[32m+[m[32m                            <button type="submit" class="btn btn-link p-0 text-danger" title="Cerrar sesión">[m
+[32m+[m[32m                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">[m
+[32m+[m[32m                                    <path fill-rule="evenodd" d="M6 3a.5.5 0 0 1 .5-.5h4A.5.5 0 0 1 11 3v2h-1V3H7v10h3v-2h1v2a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5V3zm8.854 4.646a.5.5 0 0 1 0 .708l-2 2a.5.5 0 1 1-.708-.708L13.293 8H5.5a.5.5 0 0 1 0-1h7.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2z"/>[m
+[32m+[m[32m                                </svg>[m
+[32m+[m[32m                            </button>[m
+[32m+[m[32m                        </form>[m
+[32m+[m[32m                    </li>[m
+[32m+[m[32m                    {% else %}[m
+[32m+[m[32m                    <li><a href="{% url 'login' %}" class="nav-link">[m
+[32m+[m[32m                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">[m
+[32m+[m[32m                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>[m
+[32m+[m[32m                          <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>[m
+[32m+[m[32m                      </svg>[m
+[32m+[m[32m                      Iniciar sesión[m
+[32m+[m[32m                  </a></li>[m
+[32m+[m[32m                    {% endif %}[m
+[32m+[m[32m              </ul>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m      </nav>[m
+[32m+[m[32m    {% block content %}[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m    {% include 'footer.html' %}[m
+[32m+[m[32m    <script>[m
+[32m+[m[32m      // Mobile menu toggle[m
+[32m+[m[32m      document.getElementById('navToggle').addEventListener('click', function() {[m
+[32m+[m[32m          document.getElementById('navMenu').classList.toggle('active');[m
+[32m+[m[32m      });[m
+[32m+[m[32m  </script>[m
+[32m+[m[32m    {% block extra_js %}{% endblock %}[m
+[32m+[m[41m    [m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/Templates/registration/login.html b/EcomerceApp/Templates/registration/login.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1607bb9[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/Templates/registration/login.html[m
+[36m@@ -0,0 +1,55 @@[m
+[32m+[m[32m{% load static %}[m
+[32m+[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="en">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>Login</title>[m[41m    [m
+[32m+[m[32m    {% block extra_css %}[m
+[32m+[m[32m    <link rel="stylesheet" href="{% static 'Styles/login.css' %}">[m
+[32m+[m[32m    {% endblock %}[m
+[32m+[m[32m    <!-- Bootstrap CSS -->[m
+[32m+[m[32m    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body class="login-bg">[m
+[32m+[m
+[32m+[m[32m    <div class="login-container">[m
+[32m+[m[32m        <div class="login-card">[m
+[32m+[m[32m            <h2 class="login-title">Inicio de Sesión</h2>[m
+[32m+[m
+[32m+[m[32m            <form method="POST">[m
+[32m+[m[32m                {% csrf_token %}[m
+[32m+[m[41m                [m
+[32m+[m[32m                <!-- Campo de usuario -->[m
+[32m+[m[32m                <div class="form-group">[m
+[32m+[m[32m                    <label for="Usuario" class="form-label">{{ form.username.label }}</label>[m
+[32m+[m[32m                    {{ form.username }}[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <!-- Campo de contraseña -->[m
+[32m+[m[32m                <div class="form-group">[m
+[32m+[m[32m                    <label for="password" class="form-label">{{ form.password.label }}</label>[m
+[32m+[m[32m                    {{ form.password }}[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <!-- Botón de Ingreso -->[m
+[32m+[m[32m                <div class="form-actions">[m
+[32m+[m[32m                    <button class="btn-primary" type="submit">Ingresar</button>[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <!-- Enlaces para crear cuenta o recuperar contraseña -->[m
+[32m+[m[32m                <div class="form-links">[m
+[32m+[m[32m                    <a href="#" class="link">¿Olvidaste tu contraseña?</a>[m
+[32m+[m[32m                    <a href="{% url 'crear_usuario_cliente' %}" class="link">Crear Cuenta</a>[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <!-- Botón de Salir -->[m
+[32m+[m[32m                <div class="form-actions">[m
+[32m+[m[32m                    <a href="/" class="btn-secondary">Salir</a>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </form>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/__init__.py b/EcomerceApp/__init__.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e69de29[m
+[1mdiff --git a/EcomerceApp/__pycache__/__init__.cpython-312.pyc b/EcomerceApp/__pycache__/__init__.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..03585b4[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/__init__.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/__init__.cpython-313.pyc b/EcomerceApp/__pycache__/__init__.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5a4f341[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/__init__.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/admin.cpython-312.pyc b/EcomerceApp/__pycache__/admin.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9b20678[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/admin.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/admin.cpython-313.pyc b/EcomerceApp/__pycache__/admin.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..251a178[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/admin.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/apps.cpython-312.pyc b/EcomerceApp/__pycache__/apps.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..b0b8dbe[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/apps.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/apps.cpython-313.pyc b/EcomerceApp/__pycache__/apps.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..8d8c21f[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/apps.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/forms.cpython-312.pyc b/EcomerceApp/__pycache__/forms.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..89d05c2[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/forms.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/forms.cpython-313.pyc b/EcomerceApp/__pycache__/forms.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..07ba23a[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/forms.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/models.cpython-312.pyc b/EcomerceApp/__pycache__/models.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..7e0cb1e[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/models.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/models.cpython-313.pyc b/EcomerceApp/__pycache__/models.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..aa8ba11[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/models.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/signals.cpython-312.pyc b/EcomerceApp/__pycache__/signals.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f5d2463[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/signals.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/signals.cpython-313.pyc b/EcomerceApp/__pycache__/signals.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a277caf[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/signals.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/urls.cpython-312.pyc b/EcomerceApp/__pycache__/urls.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9d73bae[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/urls.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/urls.cpython-313.pyc b/EcomerceApp/__pycache__/urls.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..292293b[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/urls.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/views.cpython-312.pyc b/EcomerceApp/__pycache__/views.cpython-312.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c0d7717[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/views.cpython-312.pyc differ
+[1mdiff --git a/EcomerceApp/__pycache__/views.cpython-313.pyc b/EcomerceApp/__pycache__/views.cpython-313.pyc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..74d03d7[m
+Binary files /dev/null and b/EcomerceApp/__pycache__/views.cpython-313.pyc differ
+[1mdiff --git a/EcomerceApp/admin.py b/EcomerceApp/admin.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..47c5b19[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/admin.py[m
+[36m@@ -0,0 +1,133 @@[m
+[32m+[m[32mfrom django.contrib import admin[m
+[32m+[m[32mfrom django.contrib.auth.admin import UserAdmin[m
+[32m+[m[32mfrom .models import Marca, Categoria, Productos, Proveedores, Carrito, ListaDeseos, Ventas, DetalleVenta, UsuarioCliente, DireccionesEnvio, ImagenProducto[m
+[32m+[m[32mfrom django.utils.translation import gettext_lazy as _[m
+[32m+[m
+[32m+[m[32m# Register your models here.[m
+[32m+[m
+[32m+[m[32madmin.site.site_header= _("Panel de Administración E-Comerce")[m
+[32m+[m[32m#admin.site.site_title= _("")[m
+[32m+[m[32madmin.site.index_title= _("Gestión E-comerce")[m
+[32m+[m
+[32m+[m[32m#CONFIGURAMOS EL PANEL DE BUSQUEDA, DE TAL MODO A PODER FACILITAR LA MENERA EN QUE BUSCAMOS DATOS DESDE EL ADMIN[m
+[32m+[m
+[32m+[m[32m@admin.register(Marca)[m
+[32m+[m[32mclass MarcaAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display= ('id', 'datos') #Con list_display podemos editar lo que queremos mostrar en nuestra pantalla de ADMIN[m
+[32m+[m[32m    search_fields = ('id', 'name') #Con search_fields, habilitamos un label de busqueda, y editamos como podemos buscar los datos[m
+[32m+[m[32m    #list_editable = ('datos',)#Con list_editable seleccionamos en pantalla lo que podemos editar sin necesidad de ingresar dentro del dato, desde la pantalla principal[m
+[32m+[m[32m    list_per_page = 3 #Con list_per_page seleccionamos cuantos datos queremos mostrar por pagina, lo que hara que nos genere paginas que solo muestren la cantidad de datos seleccionados[m
+[32m+[m[41m   [m
+[32m+[m[32m    #Ahora agregaremos una funcion, que nos mostrara en pantalla las marcas pero en mayusculas.[m
+[32m+[m[32m    def datos(self, obj):[m
+[32m+[m[32m        return obj.name.upper()[m
+[32m+[m[32m    datos.short_description = "MARCAS" #Damos un titulo al campo donde indican los nombres[m[41m [m
+[32m+[m[32m    datos.empty_value_diplay = "???" #Si tenemos datos vacios, en pantalla apareceran ???[m
+[32m+[m[32m    datos.admin_order_field = "name" #Ordenamos los datos teniendo en cuenta la casilla name[m
+[32m+[m
+[32m+[m
+[32m+[m[32m@admin.register(Categoria)[m
+[32m+[m[32mclass CategoriaAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display= ('id', 'descripcion',)[m
+[32m+[m[32m    search_fields=('id','descripcion',)[m
+[32m+[m[32m    list_editable=('descripcion',)[m
+[32m+[m[32m    list_per_page = 3[m
+[32m+[m
+[32m+[m[32mclass ImagenProductoAdmin(admin.TabularInline):[m
+[32m+[m[32m    model = ImagenProducto[m
+[32m+[m[32m    extra = 1[m
+[32m+[m
+[32m+[m
+[32m+[m[32m@admin.register(Productos)[m
+[32m+[m[32mclass ProductosAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display = ('id', 'datos', 'stock_min', 'stock_max', 'precio')[m
+[32m+[m[32m    search_fields=('id', 'name')[m
+[32m+[m[32m    list_per_page = 3[m
+[32m+[m[32m    list_filter = ('marca',)[m
+[32m+[m[32m    inlines = [ImagenProductoAdmin][m
+[32m+[m[32m     #Vamos a adherir un advance option, con fieldsrts lo que haremos sera, no habilitar a primera los distintos datos que corresponden al modelo producto en pantalla, para poder observar los demas datos, tendremos que dar click en advance option y con ello se nos desplegaran los demas datos para poder modificarlos[m
+[32m+[m[32m    fieldsets = ([m
+[32m+[m[32m        (None , {[m
+[32m+[m[32m            'fields': ('name',)[m
+[32m+[m[32m        }),[m
+[32m+[m[32m        ('Advanced options', {[m
+[32m+[m[32m            'classes':('collapse', 'wide', 'extrapretty'),[m
+[32m+[m[32m            'fields': ('descripcion','imagen','precio','marca','categoria','proveedor','stock_min', 'stock_max')[m
+[32m+[m[32m        })[m
+[32m+[m[32m    )[m
+[32m+[m[32m    def datos(self, obj):[m
+[32m+[m[32m        return obj.name.upper()[m
+[32m+[m[32m    datos.short_description = "PRODUCTOS"[m[41m [m
+[32m+[m[32m    datos.empty_value_diplay = "???"[m[41m [m
+[32m+[m[32m    datos.admin_order_field = "name"[m[41m [m
+[32m+[m
+[32m+[m[32m@admin.register(Proveedores)[m
+[32m+[m[32mclass ProveedoresAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display=('id', 'datos', 'descripcion')[m
+[32m+[m[32m    search_fields=('id', 'name')[m
+[32m+[m[32m    list_per_page = 3[m
+[32m+[m[32m    list_filter = ('descripcion',)[m
+[32m+[m
+[32m+[m[32m    fieldsets= ([m
+[32m+[m[32m        (None, {[m
+[32m+[m[32m            'fields': ('name',)[m
+[32m+[m[32m        }),[m
+[32m+[m[32m        ('Advanced options', {[m
+[32m+[m[32m            'classes': ('collapse', 'wide', 'extrapretty'),[m
+[32m+[m[32m            'fields':['descripcion'][m
+[32m+[m[32m        })[m
+[32m+[m
+[32m+[m[32m    )[m
+[32m+[m[32m    def datos(self, obj):[m
+[32m+[m[32m        return obj.name.upper()[m
+[32m+[m[32m    datos.short_description = "PROVEEDORES"[m[41m [m
+[32m+[m[32m    datos.empty_value_diplay = "???"[m[41m [m
+[32m+[m[32m    datos.admin_order_field = "name"[m[41m [m
+[32m+[m
+[32m+[m[32m#Llamamos a los modelos de Venta, Venta detalle[m
+[32m+[m
+[32m+[m[32m@admin.register(Ventas)[m
+[32m+[m[32mclass VentasAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display=('id', 'id_usuario','fecha', 'total_venta', 'estado')[m
+[32m+[m[32m    search_fields=('id','fecha', 'id_usuario')[m
+[32m+[m[32m    list_per_page= 10[m
+[32m+[m[32m    list_filter=('fecha',)[m
+[32m+[m[32m    list_editable=('estado',)[m
+[32m+[m
+[32m+[m[32m@admin.register(DetalleVenta)[m
+[32m+[m[32mclass DetalleVentaAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display=('id', 'venta','producto', 'cantidad', 'precio_unitario', 'subtotal')[m
+[32m+[m[32m    search_fields = ('id', 'producto', 'venta')[m
+[32m+[m[32m    list_per_page = 10[m
+[32m+[m[32m    list_filter=('id', 'venta', )[m
+[32m+[m
+[32m+[m[32m#VERIFICACION DE USUARIOS Y DIRECCIONES EN EL PANEL DE ADMINISTRADOR[m
+[32m+[m[32mclass UsuarioClienteAdmin(UserAdmin):[m
+[32m+[m[32m    list_display = ('username', 'email', 'first_name', 'telefono')[m
+[32m+[m[32m    list_filter = ('username', 'email', 'groups')[m
+[32m+[m[32m    search_fields = ('username', 'email', 'first_name', 'telefono')[m
+[32m+[m[32m    ordering = ('username', )[m
+[32m+[m
+[32m+[m[32m    fieldsets=([m
+[32m+[m[32m        (None,{'fields':('username', 'password')}),[m
+[32m+[m[32m        ('Información Personal', {'fields': ('first_name', 'last_name', 'email', 'telefono', 'direccion', 'fecha_nacimiento', 'genero', 'foto_perfil')}),[m
+[32m+[m[32m        ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),[m
+[32m+[m[32m        ('Fechas Importantes', {'fields': ('last_login', 'date_joined')}),[m
+[32m+[m[32m    )[m
+[32m+[m[32m    add_fieldsets =([m
+[32m+[m[32m         (None, {[m
+[32m+[m[32m            'classes': ('wide',),[m
+[32m+[m[32m            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'telefono'),[m
+[32m+[m[32m        }),[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32mclass DireccionesEnvioAdmin(admin.ModelAdmin):[m
+[32m+[m[32m    list_display = ('usuario_cliente', 'direccion', 'ciudad', 'departamento', 'tipo', 'es_principal', 'fecha_creacion')[m
+[32m+[m[32m    list_filter = ('tipo', 'es_principal', 'fecha_creacion')[m
+[32m+[m[32m    search_fields = ('usuario_cliente__username', 'direccion', 'ciudad', 'departamento')[m
+[32m+[m
+[32m+[m
+[32m+[m[32madmin.site.register(UsuarioCliente, UsuarioClienteAdmin)[m
+[32m+[m[32madmin.site.register(DireccionesEnvio, DireccionesEnvioAdmin)[m
+[32m+[m[32madmin.site.register(ImagenProducto)[m
+[32m+[m
+[1mdiff --git a/EcomerceApp/apps.py b/EcomerceApp/apps.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1eb9e82[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/apps.py[m
+[36m@@ -0,0 +1,9 @@[m
+[32m+[m[32mfrom django.apps import AppConfig[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass EcomerceappConfig(AppConfig):[m
+[32m+[m[32m    default_auto_field = 'django.db.models.BigAutoField'[m
+[32m+[m[32m    name = 'EcomerceApp'[m
+[32m+[m
+[32m+[m[32m    def ready(self):[m
+[32m+[m[32m        import EcomerceApp.signals[m[41m [m
+[1mdiff --git a/EcomerceApp/forms.py b/EcomerceApp/forms.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a1062ac[m
+[1m--- /dev/null[m
+[1m+++ b/EcomerceApp/forms.py[m
+[36m@@ -0,0 +1,107 @@[m
+[32m+[m[32mfrom django import forms[m
+[32m+[m[32mfrom .models import Categoria, Marca, Proveedores, Productos, Carrito, ListaDeseos, UsuarioCliente[m
+[32m+[m
+[32m+[m
+[32m+[m[32m#CREAMOS NUESTROS DISTINTOS FORMULARIOS[m
+[32m+[m
+[32m+[m[32mclass CrearProductos(forms.ModelForm):[m
+[32m+[m[32m    class Meta:[m
+[32m+[m[32m        model = Productos[m
+[32m+[m[32m        fields = ['name', 'descripcion', 'marca', 'categoria', 'precio', 'imagen', 'stock_min', 'stock_max', 'proveedor'][m
+[32m+[m
+[32m+[m[32m        widgets = {[m
+[32m+[m[32m            'name': forms.TextInput(attrs={'class':'form-control'}),[m
+[32m+[m[32m            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),[m
+[32m+[m[32m            'marca': forms.Select(attrs={'class': 'form-control'}),[m
+[32m+[m[32m            'categoroa': forms.Select(attrs={'class':'form-control'}),[m
+[32m+[m[32m            'precio': forms.NumberInput(attrs={'class':'form-control','step':'0.01','min': '0'}),[m
+[32m+[m[32m            'imagen': forms.ImageField(label="IMG", required=False, widget=forms.FileInput(attrs={'class': 'form-control'})),[m
+[32m+[m[32m            'stock_min':forms.NumberInput(attrs={'class':'form-control','step':'1','min': '1'}),[m
+[32m+[m[32m            'stock_max':forms.NumberInput(attrs={'class':'form-control','step':'1','min': '1'}),[m
+[32m+[m[32m            'proveedor': forms.Select(attrs={'class':'form-control'})[m
+[32m+[m
+[32m+[m[32m#IMPORTANTE PARA AGREGAR IMAGENES A NUESTRO FORMULARIO DEBEMOS DE USAR EL WIDGETS ClearableFileInput[m
+[32m+[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        labels = {[m
+[32m+[m[32m            'name':'Agrega el nombre del producto',[m
+[32m+[m[32m            'descripcion':'Ingresa un breve detalle acerca del produco',[m
+[32m+[m[32m            'marca':'Marca',[m
+[32m+[m[32m            'categoroa':'Categoria',[m
+[32m+[m[32m            'precio':'Precio',[m
+[32m+[m[32m            'imagen':'Imagen',[m
+[32m+[m[32m            'stock_min':'Stock Min',[m
+[32m+[m[32m            'stock_max':'Stock Max',[m
+[32m+[m[32m            'proveedor':'Proveedor'[m
+[32m+[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m#FUNCION PARA CORROBORAR QUE EL USUARIO NO DEJE SALDO NEGATIVO MENOR A 0[m[41m [m
+[32m+[m[32m    def clean_precio(self):[m
+[32m+[m[32m        precio = self.cleaned_data.get('precio')[m
+[32m+[m[32m        if precio is not None and precio < 0:[m
+[32m+[m[32m            forms.ValidationError('El precio debe ser mayor a 0')[m
+[32m+[m[32m        return precio[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32mclass CrearUsuario(forms.Form):[m
+[32m+[m[32m    nombre = forms.CharField([m
+[32m+[m[32m        label="Usuario",[m[41m [m
+[32m+[m[32m        max_length=100,[m[41m [m
+[32m+[m[32m        widget=forms.TextInput(attrs={'class': 'form-control'})[m
+[32m+[m[32m    )[m
+[32m+[m[32m    apellido = forms.CharField([m
+[32m+[m[32m        label="Apellido",[m[41m [m
+[32m+[m[32m        max_length=100,[m[41m [m
+[32m+[m[32m        widget=forms.TextInput(attrs={'class': 'form-control'})[m
+[32m+[m[32m    )[m
+[32m+[m[32m    email = forms.EmailField([m
+[32m+[m[32m        label="Email",[m[41m [m
+[32m+[m[32m        max_length=100,[m[41m [m
+[32m+[m[32m        widget=forms.EmailInput(attrs={'class': 'form-control'})[m
+[32m+[m[32m    )[m
+[32m+[m[32m    password = forms.CharField([m
+[32m+[m[32m        label="Contraseña",[m[41m [m
+[32m+[m[32m        max_length=100,[m[41m [m
+[32m+[m[32m        widget=forms.PasswordInput(attrs={'class': 'form-control'})[m
+[32m+[m[32m    )[m
+[32m+[m[32m    confirm_password = forms.CharField([m
+[32m+[m[32m        label="Confirmar contraseña",[m[41m [m
+[32m+[m[32m        max_length=100,[m[41m [m
+[32m+[m[32m        widget=forms.PasswordInput(attrs={'class': 'form-control'})[m
+[32m+[m[32m    )[m
+[32m+[m[41m    [m
+[32m+[m[32m    #AGREGAMOS UNA FUNCION PARA PODER LIMPIAR LOS DATOS y CONFIRMAR SI LAS CONTRASEÑAS COINCIDEN CORRECTAMENTE[m
+[32m+[m
+[32m+[m[32m    def clean(self):[m
+[32m+[m[32m        clened_data = super().clean()[m
+[32m+[m[32m        password = clened_data.get('password')[m
+[32m+[m[32m        confirm_password = clened_data.get('confirm_password')[m
+[32m+[m
+[32m+[m[32m        if password and confirm_password and password != confirm_password:[m
+[32m+[m[32m            raise forms.ValidationError("Las contraseñas no coinciden, VERIFICAR!")[m
+[32m+[m[32m        return clened_data[m
+[32m+[m
+[32m+[m[32mclass ConfirmarUsuario(forms.Form):[m
+[32m+[m[32m    Usuario = forms.CharField(label="Ingrese el usuario", max_length=50),[m
+[32m+[m[32m    contraseña = forms.CharField(label="Ingrese su contraseña", max_length=50, widget=forms.PasswordInput)[m
+[32m+[m
+[32m+[m[32m#Vamos a generar un FOMULARIO para confirmar el usuario correspondiente a nuestro modelo Usuarios, para clientes.[m
+[32m+[m
+[32m+[m[32mclass ConfirmarUsuarioCliente(forms.Form):[m
+[32m+[m[32m    email = forms.EmailField(label="Ingrese su email", max_length=100)[m
+[32m+[m[32m    contraseña = forms.CharField(label="Ingrese su contraseña", max_length=50, widget=forms.PasswordInput)[m
+[32m+[m
+[32m+[m[32m#Formulario para UsuarioCliente el cual se diferencia de USER[m
+[32m+[m
+[32m+[m[32mclass UsuarioClienteForm(forms.ModelForm):[m
+[32m+[m[32m    class Meta:[m
+[32m+[m[32m        model = UsuarioCliente[m
+[32m+[m[32m        fields = ['first_name', 'last_name', 'username', 'email', 'password', 'telefono', 'direccion', 'fecha_nacimiento', 'genero', 'foto_perfil'][m
+[32m+[m
+[32m+[m[32m    password = forms.CharField(widget=forms.PasswordInput(), required=True)[m
+[32m+[m[32m    telefono = forms.CharField(max_length=15, required=False)[m
+[32m+[m[32m    direccion = forms.CharField(widget=forms.Textarea, required=False)[m
+[32m+[m[32m    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)[m
+[32m+[m[32m    genero = forms.ChoiceField(choices=[('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')], required=False)[m
+\ No newline at end of file[m
+[1mdiff --git a/EcomerceApp/migrations/0001_initial.py b/EcomerceApp/migrations/0001_initial.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..8abe96a[m
+[1

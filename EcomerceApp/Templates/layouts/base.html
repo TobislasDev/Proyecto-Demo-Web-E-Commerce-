@@ -6,43 +6,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'Styles/index.css' %}">
+  <link rel="stylesheet" href="{% static 'Styles/navbar.css' %}">
   {% block extra_css %}
   {% endblock %}
- 
-
 </head> 
-<body>
-      <!-- Navigation -->
-      <nav class="navbar">
-        <div class="container">
-            <a href="#" class="navbar-brand">EguerahaStore</a>
-            <button class="navbar-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="navbar-menu" id="navMenu">
-                <ul class="nav-list">
-                    <li><a href="/" class="nav-link">Home</a></li>
-                    <li><a href="{% url 'Productos' %}" class="nav-link">Productos</a></li>
-                    <li><a href="{% url 'ver_carrito' %}" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                        </svg>
-                    </a></li>
-                    <li><a href="{% url 'ver_lista_deseos' %}" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                            <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>
-                        </svg>
-                    </a></li>
+<body class="{% block body_class %}{% endblock %}">
+     <!-- Navigation -->
+<nav class="navbar">
+    <div class="container">
+        <a href="#" class="navbar-brand">EguerahaStore</a>
+        <button class="navbar-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="navbar-menu" id="navMenu">
+            <ul class="nav-list">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="{% url 'Productos' %}" class="nav-link">Productos</a></li>
+                <li><a href="{% url 'ver_carrito' %}" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                    </svg>
+                </a></li>
+                <li><a href="{% url 'ver_lista_deseos' %}" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>
+                    </svg>
+                </a></li>
                 {% if user.is_authenticated %}
-                    <li>
-                        <!-- Nombre de usuario -->
-                        <a href="{% url 'Perfil_Usuario' %}" class="nav-link">@{{ user.username }}</a>
-                        
-                        <!-- Botón de cerrar sesión -->
-                        <form action="{% url 'logout' %}" method="POST" class="ms-2 d-inline">
+                    <li class="nav-item">
+                        <a href="{% url 'Perfil_Usuario' %}" class="nav-link user-name">@{{ user.username }}</a>
+                        <form action="{% url 'logout' %}" method="POST" class="ms-2 d-inline logout-form">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-link p-0 text-danger" title="Cerrar sesión">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -51,27 +46,29 @@
                             </button>
                         </form>
                     </li>
-                    {% else %}
-                    <li><a href="{% url 'login' %}" class="nav-link">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                          <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                      </svg>
-                      Iniciar sesión
-                  </a></li>
-                    {% endif %}
-              </ul>
-          </div>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link login-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                            </svg>
+                            Iniciar sesión
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-      </nav>
+    </div>
+</nav>
     {% block content %}
     {% endblock %}
     {% include 'footer.html' %}
     <script>
       // Mobile menu toggle
-      document.getElementById('navToggle').addEventListener('click', function() {
-          document.getElementById('navMenu').classList.toggle('active');
-      });
+    document.getElementById('navToggle').addEventListener('click', function() {
+        document.getElementById('navMenu').classList.toggle('active');
+    });
   </script>
     {% block extra_js %}{% endblock %}
     

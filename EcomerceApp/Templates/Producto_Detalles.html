@@ -1,0 +1,111 @@
+{% extends 'layouts/Base.html' %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}Detalle del Producto{% endblock %}
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Styles/ProductosDetalle.css' %}">
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    <main class="container">
+        <!-- Galeria de imagenes -->
+         
+        <div class="product-gallery">
+            <div class="main-image">
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.name }}" id="mainImage">
+            </div>
+            {% for imagen in producto.Imagenes_Adicionales.all %}
+            <div class="thumbnail-container {% if forloop.first %}active{% endif %}">
+                <img src="{{ imagen.imagen.url }}" alt="Thumbnail {{ forloop.counter }}" class="thumbnail active" onclick="changeImage(this.src)">
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Detalles del Producto -->
+        <div class="product-info">
+            <h1>{{ producto.name }}</h1>
+            <p class="price">{{ producto.precio|floatformat:0|intcomma }}</p>
+            <div class="payment-methods">
+                <h2>Métodos de Pago</h2>
+                <div class="payment-icons">
+                    <div class="payment-icon">
+                        <img src="{% static 'img/visa.svg' %}" alt="Visa">
+                    </div>
+                    <div class="payment-icon">
+                        <img src="{% static 'img/mc_symbol.svg' %}" alt="Mastercard">
+                    </div>
+                    <div class="payment-icon">
+                        <img src="{% static 'img/paypal.svg' %}" alt="PayPal">
+                    </div>
+                </div>
+            </div>
+            <p>{{ producto.descripcion }}</p>
+            <div class="quantity-selector">
+                <h2>Quantity</h2>
+                <div class="quantity-controls">
+                    <button onclick="updateQuantity(-1)">-</button>
+                    <span id="quantity">1</span>
+                    <button onclick="updateQuantity(1)">+</button>
+                </div>
+            </div>
+            <div class="action-buttons">
+            <form action="{% url 'Carrito_de_compras' producto.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="cantidad" id="cantidadInput" value="1">
+                <button class="add-to-cart" type="submit">Agregar al Carrito</button>
+            </form>
+            <form action="{% url 'Lista_de_deseo' producto.id %}" method="post">
+                {% csrf_token %}
+                    <button class="add-to-wishlist">♡</button>
+            </form>
+            </div>
+            
+
+        </div>
+    </main>
+
+    <!-- Productos Relacionados -->
+    <section class="related-products">
+        <h2>Productos Relacionados</h2>
+        <div class="product-grid">
+            {% for producto in productos_relacionados %}
+            <div class="product-card">
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.name }}">
+                <h3>
+                    <a href="{% url 'Productos_Detalle' producto.id %}" class="product-title">{{ producto.name }}</a>
+                </h3>
+                <p>{{ producto.precio|floatformat:0|intcomma }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <script>
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+                if(thumb.src === src) thumb.classList.add('active');
+            });
+        }
+
+        function updateQuantity(change) {
+            const quantityElement = document.getElementById('quantity');
+            const cantidadInput = document.getElementById('cantidadInput');
+            let quantity = parseInt(quantityElement.textContent);
+            quantity = Math.max(1, quantity + change);
+            quantityElement.textContent = quantity;
+            cantidadInput.value = quantity; // Actualiza el valor del campo oculto
+        }
+        
+    </script>
+    
+    {% endblock %}
+   
+</body>
+</html>

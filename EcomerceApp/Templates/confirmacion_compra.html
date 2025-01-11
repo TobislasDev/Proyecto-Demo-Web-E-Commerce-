@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+{% block title %}¡Compra exitosa!{% endblock %}
+{% load humanize %}
+{% load static %}
+
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Styles/ConfirmacionCompra.css' %}">
+    {% endblock %}
+{% block content %}
+
+<div class="purchase-confirmation">
+    <h1>!Gracias por tu compra!</h1>
+    <p>Tu pedido ha sido realizado con éxito.</p>
+    <div class="order-details">
+    <p><strong>Número de pedido:</strong> {{ venta.id }}</p>
+    <p><strong>Total pagado:</strong> {{ venta.total_venta|floatformat:0|intcomma }}</p>
+    <p><strong>Estado del pedido:</strong> {{ venta.estado }}</p>
+    <a href="{% url 'Index' %}">Seguir Comprando</a>
+    </div>
+    
+</div>
+{% endblock %}

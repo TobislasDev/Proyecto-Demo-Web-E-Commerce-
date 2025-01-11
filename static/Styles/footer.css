@@ -1,0 +1,67 @@
+
+/* Footer Styles */
+.footer {
+    background-color: #f8f8f8;
+    padding: 4rem 0 2rem;
+    margin-top: 5rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.footer-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #222222;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+    color: #666666;
+}
+
+.footer-section a {
+    color: #666666;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #222222;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e5e5;
+    color: #666666;
+}
+/* Ajustes Responsivos */
+/* Breakpoint para tablets pequeñas y móviles (max-width: 768px) */
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Breakpoint para tablets y pantallas medianas (max-width: 1024px) */
+@media (max-width: 1024px) {
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
